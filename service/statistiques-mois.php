@@ -1,41 +1,31 @@
-<?php 
-	header("Content-type: text/xml");
+<?php
+	//header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
 	include "connexion.php";
-	
-	$SQL_LISTE_CAPTEURS = "SELECT * FROM capteur";
-	$requeteListeCapteurs = $basededonnees->prepare($SQL_LISTE_CAPTEURS);
-	$requeteListeCapteurs->execute();
-	$listeCapteursBD = $requeteListeCapteurs->fetchAll(PDO::FETCH_OBJ);
 	$mois = $_GET['mois'];
-		
-	foreach($listeCapteursBD as $capteur) {
-		$moisCapteur = date("m",strtotime($capteur->date));
-		if($moisCapteur == $mois){
-			$listeDateCapteursParMois[] = $capteur->date;
-			$listeValeurCapteursParMois[] = $capteur->valeur;
-		}
-	}
-	/*
-	for($i = 0; $i<count($listeDateCapteursParMois); $i++){
-		$listeCapteursParJour = array(date("d", strtotime($listeDateCapteursParMois[$i])) => $listeValeurCapteursParMois[$i]);
-		print_r($listeCapteursParJour);
-	}*/
+
+	$SQL_LISTE_CAPTEURS_MOIS = "SELECT COUNT(*) as nombreCapteurs, AVG(valeur) as moyenneMois, MAX(valeur) as maximumMois, MIN(valeur) as minimumMois FROM capteur WHERE MONTH(date) =" . $mois;
+	$requeteListeCapteursMois = $basededonnees->prepare($SQL_LISTE_CAPTEURS_MOIS);
+	$requeteListeCapteursMois->execute();
+	$listeCapteursMois = $requeteListeCapteursMois->fetchAll(PDO::FETCH_OBJ);
+
+	$SQL_LISTE_CAPTEURS_PAR_JOUR = "SELECT DAY(date) as jour, COUNT(*) as nombreCapteurs, AVG(valeur) as moyenneJour, MAX(valeur) as maximumJour, MIN(valeur) as minimumJour FROM capteur WHERE MONTH(date) =" . $mois . " GROUP BY DAY(date)";
+	$requeteListeCapteursJour = $basededonnees->prepare($SQL_LISTE_CAPTEURS_MOIS);
+	$requeteListeCapteursJour->execute();
+	$listeCapteursJour = $requeteListeCapteursJour->fetchAll(PDO::FETCH_OBJ);
 ?>
 
 <statistiques-mois>
 	<mois><?=$mois?></mois>
 	<statistiques>
-		<nombre-tests><?=count($listeDateCapteursParMois)?></nombre-tests>
+		<nombre-tests></nombre-tests>
 		<details>
-			<?php /*foreach($listeCapteursParJour as $jour => $valeur) {*/ ?>
 			<jour>
 				<date></date>
 				<moyenne></moyenne>
 				<maximum></maximum>
 				<minimum></minimum>
 			</jour>
-			<?php /*}*/ ?>
 		</details>
 		<synthese>
 			<moyenne-mois></moyenne-mois>
