@@ -11,21 +11,22 @@
 	$requeteListeCapteursJour = $basededonnees->prepare($SQL_LISTE_CAPTEURS_JOUR);
 	$requeteListeCapteursJour->execute();
 	$listeCapteursJour = $requeteListeCapteursJour->fetchAll(PDO::FETCH_OBJ);
+	
+	$SQL_JOUR_VALEUR_MAX = "SELECT DAY(date) as jour, valeur FROM capteur WHERE YEAR(date) = " . $annee . " AND MONTH(date) = " . $mois . " AND valeur IN (SELECT MAX(valeur) FROM capteur WHERE YEAR(date) = " . $annee . " AND MONTH(date) = " . $mois . ") GROUP BY MONTH(date)";
+	$requeteJourValeurMax = $basededonnees->prepare($SQL_JOUR_VALEUR_MAX);
+	$requeteJourValeurMax->execute();
+	$jourValeurMax = $requeteJourValeurMax->fetch(PDO::FETCH_OBJ);;
 
 	if(!empty($listeCapteursJour))
 	{
-		$maximumJour = $listeCapteursJour[0]->maximumJour;
 		$minimumJour = $listeCapteursJour[0]->minimumJour;
 		$maxTestJour = $listeCapteursJour[0]->nombreCapteursJour;
 		$minTestJour = $listeCapteursJour[0]->nombreCapteursJour;
 
-		$jourValeurMax = $listeCapteursJour[0]->jour;
 		$jourValeurMin = $listeCapteursJour[0]->jour;
 		$jourMaxTest = $listeCapteursJour[0]->jour;
 		$jourMinTest = $listeCapteursJour[0]->jour;
-
 	}
-	
 	
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -36,12 +37,7 @@
 		<nombre-tests><?=$listeCapteursMois->nombreCapteursMois?></nombre-tests>
 		<details>
 			<?php foreach($listeCapteursJour as $jour){
-				 
-				if(($jour->maximumJour)>$maximumJour)
-				{
-					$maximumJour = $jour->maximumJour;
-					$jourValeurMax=$jour->jour;
-				}
+
 				if(($jour->minimumJour)<$minimumJour)
 				{
 					$minimumJour = $jour->minimumJour;
@@ -71,7 +67,7 @@
 			<moyenne-mois><?=$listeCapteursMois->moyenneMois?></moyenne-mois>
 			<maximum-mois><?=$listeCapteursMois->maximumMois?></maximum-mois>
 			<minimum-mois><?=$listeCapteursMois->minimumMois?></minimum-mois>
-			<jour-valeur-max><?=$jourValeurMax?></jour-valeur-max>
+			<jour-valeur-max><?=$jourValeurMax->jour?></jour-valeur-max>
 			<jour-valeur-min><?=$jourValeurMin?></jour-valeur-min>
 			<jour-max-tests><?=$jourMaxTest?></jour-max-tests>
 			<jour-min-tests><?=$jourMinTest?></jour-min-tests>
