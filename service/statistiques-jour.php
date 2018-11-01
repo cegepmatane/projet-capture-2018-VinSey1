@@ -18,13 +18,17 @@
 	$requeteHeureValeurMax->execute();
 	$heureValeurMax = $requeteHeureValeurMax->fetch(PDO::FETCH_OBJ);;
 
+	$SQL_HEURE_VALEUR_MIN = "SELECT HOUR(date) as heure, valeur FROM capteur WHERE YEAR(date) = " . $annee . " AND MONTH(date) = " . $mois . " AND DAY(date) = " . $jour . " AND valeur IN (SELECT MIN(valeur) FROM capteur WHERE YEAR(date) = " . $annee . " AND MONTH(date) = " . $mois . " AND DAY(date) = " . $jour . ") GROUP BY DAY(date)";
+	$requeteHeureValeurMin = $basededonnees->prepare($SQL_HEURE_VALEUR_MIN);
+	$requeteHeureValeurMin->execute();
+	$heureValeurMin = $requeteHeureValeurMin->fetch(PDO::FETCH_OBJ);;
+
 	if(!empty($listeCapteursHeure))
 	{
-		$minimumHeure = $listeCapteursHeure[0]->minimumHeure;
 		$maxTestHeure = $listeCapteursHeure[0]->nombreCapteursHeure;
 		$minTestHeure = $listeCapteursHeure[0]->nombreCapteursHeure;
 
-		$heureValeurMin = $listeCapteursHeure[0]->heure;
+		$heureMaxTest = $listeCapteursHeure[0]->heure;
 		$heureMinTest = $listeCapteursHeure[0]->heure;
 	}
 
@@ -38,12 +42,7 @@
 		<nombre-tests><?=$listeCapteursJour->nombreCapteursJour?></nombre-tests>
 		<details>
 			<?php foreach($listeCapteursHeure as $heure){ 
-				
-				if(($heure->minimumHeure)<$minimumHeure)
-				{
-					$minimumHeure = $heure->minimumHeure;
-					$heureValeurMin = $heure->heure;
-				}
+
 				if(($heure->nombreCapteursHeure)>$maxTestHeure)
 				{
 					$maxTestHeure = $heure->nombreCapteursHeure;
@@ -69,7 +68,7 @@
 			<maximum-jour><?=$listeCapteursJour->maximumJour?></maximum-jour>
 			<minimum-jour><?=$listeCapteursJour->minimumJour?></minimum-jour>
 			<heure-valeur-max><?=$heureValeurMax->heure?></heure-valeur-max>
-			<heure-valeur-min><?=$heureValeurMin?></heure-valeur-min>
+			<heure-valeur-min><?=$heureValeurMin->heure?></heure-valeur-min>
 			<heure-max-tests><?=$heureMaxTest?></heure-max-tests>
 			<heure-min-tests><?=$heureMinTest?></heure-min-tests>
 		</synthese>
