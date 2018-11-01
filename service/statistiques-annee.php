@@ -20,38 +20,17 @@
 	$requeteMoisValeurMin = $basededonnees->prepare($SQL_MOIS_VALEUR_MIN);
 	$requeteMoisValeurMin->execute();
 	$moisValeurMin = $requeteMoisValeurMin->fetch(PDO::FETCH_OBJ);;
-
-	if(!empty($listeCapteursMois))
-	{
-		$maxTestMois= $listeCapteursMois[0]->nombreCapteursMois;
-		$minTestMois= $listeCapteursMois[0]->nombreCapteursMois;
-
-		$moisMaxTest = $listeCapteursMois[0]->mois;
-		$moisMinTest = $listeCapteursMois[0]->mois;
-	}
-
+	
 	header("Content-type: text/xml");
-	echo '<?xml version="1.0" encoding="UTF-8"?>';?>
+	echo '<?xml version="1.0" encoding="UTF-8"?>';
+?>
 
 <statistiques-annee>
 	<annee><?=$annee?></annee>
 	<statistiques>
 		<nombre-tests><?=$listeCapteursAnnee->nombreCapteursAnnee?></nombre-tests>
 		<details>
-			<?php foreach($listeCapteursMois as $mois){
-				
-				if(($mois->nombreCapteursMois)>$maxTestMois)
-				{
-					$maxTestMois = $mois->nombreCapteursMois;
-					$moisMaxTest=$mois->mois;
-				}
-				if(($mois->nombreCapteursMois)<$minTestMois)
-				{
-					$minTestMois = $mois->nombreCapteursMois;
-					$moisMinTest=$mois->mois;
-				}
-				
-				?>
+			<?php foreach($listeCapteursMois as $mois){ ?>
 				<mois>
 					<date><?=$mois->mois?></date>
 					<moyenne><?=$mois->moyenneMois?></moyenne>
@@ -66,8 +45,8 @@
 			<minimum-annee><?=$listeCapteursAnnee->minimumAnnee?></minimum-annee>
 			<mois-valeur-max><?=$moisValeurMax->mois?></mois-valeur-max>
 			<mois-valeur-min><?=$moisValeurMin->mois?></mois-valeur-min>
-			<mois-max-tests><?=$moisMaxTest?></mois-max-tests>
-			<mois-min-tests><?=$moisMinTest?></mois-min-tests>
+			<mois-max-tests></mois-max-tests>
+			<mois-min-tests></mois-min-tests>
 		</synthese>
 	</statistiques>
 </statistiques-annee>
