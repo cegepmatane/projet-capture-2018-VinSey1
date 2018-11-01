@@ -1,4 +1,5 @@
 var http = require('http');
+var capteurDAO = require('./accesseur/CapteurDAO');
 
 var serveur = http.createServer((requete, reponse) => {	
 	if('GET' === requete.method){
@@ -12,8 +13,8 @@ var serveur = http.createServer((requete, reponse) => {
         requete.on('end', function(){
             uri = decodeURI(uri);
             
-            var pollution = JSON.parse(uri).capteur.pollution;
-            console.log(pollution);
+            var capteur = JSON.parse(uri).capteur;
+            capteurDAO.ajouterCapteur(capteur);
         });
     }
     
