@@ -11,12 +11,12 @@
 	$requeteListeCapteursMois->execute();
 	$listeCapteursMois = $requeteListeCapteursMois->fetchAll(PDO::FETCH_OBJ);
 
-	$SQL_MOIS_VALEUR_MAX = "SELECT MONTH(date) as mois, valeur FROM capteur WHERE YEAR(date) = " . $annee . " AND valeur IN (SELECT MAX(valeur) FROM capteur GROUP BY YEAR(date))";
+	$SQL_MOIS_VALEUR_MAX = "SELECT MONTH(date) as mois, valeur FROM capteur WHERE YEAR(date) = " . $annee . " AND valeur IN (SELECT MAX(valeur) FROM capteur WHERE YEAR(date) = " . $annee . ") GROUP BY YEAR(date)";
 	$requeteMoisValeurMax = $basededonnees->prepare($SQL_MOIS_VALEUR_MAX);
 	$requeteMoisValeurMax->execute();
 	$moisValeurMax = $requeteMoisValeurMax->fetch(PDO::FETCH_OBJ);;
 
-	$SQL_MOIS_VALEUR_MIN = "SELECT MONTH(date) as mois, valeur FROM capteur WHERE YEAR(date) = " . $annee . " AND valeur IN (SELECT MIN(valeur) FROM capteur GROUP BY YEAR(date))";
+	$SQL_MOIS_VALEUR_MIN = "SELECT MONTH(date) as mois, valeur FROM capteur WHERE YEAR(date) = " . $annee . " AND valeur IN (SELECT MIN(valeur) FROM capteur WHERE YEAR(date) = " . $annee . ") GROUP BY YEAR(date)";
 	$requeteMoisValeurMin = $basededonnees->prepare($SQL_MOIS_VALEUR_MIN);
 	$requeteMoisValeurMin->execute();
 	$moisValeurMin = $requeteMoisValeurMin->fetch(PDO::FETCH_OBJ);;
