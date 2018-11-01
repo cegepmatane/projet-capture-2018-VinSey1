@@ -11,6 +11,20 @@
 	$requeteListeCapteursMois->execute();
 	$listeCapteursMois = $requeteListeCapteursMois->fetchAll(PDO::FETCH_OBJ);
 
+	if(!empty($listeCapteursMois))
+	{
+		$maximumMois = $listeCapteursMois[0]->maximumMois;
+		$minimumMois = $listeCapteursMois[0]->minimumMois;
+		$maxTestMois= $listeCapteursMois[0]->nombreCapteursMois;
+		$minTestMois= $listeCapteursMois[0]->nombreCapteursMois;
+
+		$moisValeurMax = $listeCapteursMois[0]->mois;
+		$moisValeurMin = $listeCapteursMois[0]->mois;
+		$moisMaxTest = $listeCapteursMois[0]->mois;
+		$moisMinTest = $listeCapteursMois[0]->mois;
+
+	}
+
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';?>
 
@@ -19,7 +33,30 @@
 	<statistiques>
 		<nombre-tests><?=$listeCapteursAnnee->nombreCapteursAnnee?></nombre-tests>
 		<details>
-			<?php foreach($listeCapteursMois as $mois){ ?>
+			<?php foreach($listeCapteursMois as $mois){
+				
+				if(($mois->maximumMois)>$maximumMois)
+				{
+					$maximumMois = $mois->maximumMois;
+					$moisValeurMax=$mois->mois;
+				}
+				if(($mois->minimumMois)<$minimumMois)
+				{
+					$minimumMois = $mois->minimumMois;
+					$moisValeurMin = $mois->mois;
+				}
+				if(($mois->nombreCapteursMois)>$maxTestMois)
+				{
+					$maxTestMois = $mois->nombreCapteursMois;
+					$moisMaxTest=$mois->mois;
+				}
+				if(($mois->nombreCapteursMois)<$minTestMois)
+				{
+					$minTestMois = $mois->nombreCapteursMois;
+					$moisMinTest=$mois->mois;
+				}
+				
+				?>
 				<mois>
 					<date><?=$mois->mois?></date>
 					<moyenne><?=$mois->moyenneMois?></moyenne>
@@ -32,10 +69,10 @@
 			<moyenne-annee><?=$listeCapteursAnnee->moyenneAnnee?></moyenne-annee>
 			<maximum-annee><?=$listeCapteursAnnee->maximumAnnee?></maximum-annee>
 			<minimum-annee><?=$listeCapteursAnnee->minimumAnnee?></minimum-annee>
-			<mois-valeur-max></mois-valeur-max>
-			<mois-valeur-min></mois-valeur-min>
-			<mois-max-tests></mois-max-tests>
-			<mois-min-tests></mois-min-tests>
+			<mois-valeur-max><?=$moisValeurMax?></mois-valeur-max>
+			<mois-valeur-min><?=$moisValeurMin?></mois-valeur-min>
+			<mois-max-tests><?=$moisMaxTest?></mois-max-tests>
+			<mois-min-tests><?=$moisMinTest?></mois-min-tests>
 		</synthese>
 	</statistiques>
 </statistiques-annee>
