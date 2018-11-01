@@ -13,22 +13,20 @@
 	$requeteListeCapteursHeure->execute();
 	$listeCapteursHeure = $requeteListeCapteursHeure->fetchAll(PDO::FETCH_OBJ);
 
+	$SQL_HEURE_VALEUR_MAX = "SELECT HOUR(date) as heure, valeur FROM capteur WHERE YEAR(date) = " . $annee . " AND MONTH(date) = " . $mois . " AND DAY(date) = " . $jour . " AND valeur IN (SELECT MAX(valeur) FROM capteur WHERE YEAR(date) = " . $annee . " AND MONTH(date) = " . $mois . " AND DAY(date) = " . $jour . ") GROUP BY DAY(date)";
+	$requeteHeureValeurMax = $basededonnees->prepare($SQL_HEURE_VALEUR_MAX);
+	$requeteHeureValeurMax->execute();
+	$heureValeurMax = $requeteHeureValeurMax->fetch(PDO::FETCH_OBJ);;
+
 	if(!empty($listeCapteursHeure))
 	{
-		$maximumHeure = $listeCapteursHeure[0]->maximumHeure;
 		$minimumHeure = $listeCapteursHeure[0]->minimumHeure;
 		$maxTestHeure = $listeCapteursHeure[0]->nombreCapteursHeure;
 		$minTestHeure = $listeCapteursHeure[0]->nombreCapteursHeure;
 
-		$heureValeurMax = $listeCapteursHeure[0]->heure;
 		$heureValeurMin = $listeCapteursHeure[0]->heure;
-		$heureMaxTest = $listeCapteursHeure[0]->heure;
 		$heureMinTest = $listeCapteursHeure[0]->heure;
-
 	}
-
-
-
 
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -41,11 +39,6 @@
 		<details>
 			<?php foreach($listeCapteursHeure as $heure){ 
 				
-				if(($heure->maximumHeure)>$maximumHeure)
-				{
-					$maximumHeure = $heure->maximumHeure;
-					$heureValeurMax=$heure->heure;
-				}
 				if(($heure->minimumHeure)<$minimumHeure)
 				{
 					$minimumHeure = $heure->minimumHeure;
@@ -75,7 +68,7 @@
 			<moyenne-jour><?=$listeCapteursJour->moyenneJour?></moyenne-jour>
 			<maximum-jour><?=$listeCapteursJour->maximumJour?></maximum-jour>
 			<minimum-jour><?=$listeCapteursJour->minimumJour?></minimum-jour>
-			<heure-valeur-max><?=$heureValeurMax?></heure-valeur-max>
+			<heure-valeur-max><?=$heureValeurMax->heure?></heure-valeur-max>
 			<heure-valeur-min><?=$heureValeurMin?></heure-valeur-min>
 			<heure-max-tests><?=$heureMaxTest?></heure-max-tests>
 			<heure-min-tests><?=$heureMinTest?></heure-min-tests>
