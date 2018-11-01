@@ -16,16 +16,18 @@
 	$requeteMoisValeurMax->execute();
 	$moisValeurMax = $requeteMoisValeurMax->fetch(PDO::FETCH_OBJ);;
 
+	$SQL_MOIS_VALEUR_MIN = "SELECT MONTH(date) as mois, valeur FROM capteur WHERE YEAR(date) = " . $annee . " AND valeur IN (SELECT MIN(valeur) FROM capteur GROUP BY YEAR(date))";
+	$requeteMoisValeurMin = $basededonnees->prepare($SQL_MOIS_VALEUR_MIN);
+	$requeteMoisValeurMin->execute();
+	$moisValeurMin = $requeteMoisValeurMin->fetch(PDO::FETCH_OBJ);;
+
 	if(!empty($listeCapteursMois))
 	{
-		$minimumMois = $listeCapteursMois[0]->minimumMois;
 		$maxTestMois= $listeCapteursMois[0]->nombreCapteursMois;
 		$minTestMois= $listeCapteursMois[0]->nombreCapteursMois;
 
-		$moisValeurMin = $listeCapteursMois[0]->mois;
 		$moisMaxTest = $listeCapteursMois[0]->mois;
 		$moisMinTest = $listeCapteursMois[0]->mois;
-
 	}
 
 	header("Content-type: text/xml");
@@ -38,11 +40,6 @@
 		<details>
 			<?php foreach($listeCapteursMois as $mois){
 				
-				if(($mois->minimumMois)<$minimumMois)
-				{
-					$minimumMois = $mois->minimumMois;
-					$moisValeurMin = $mois->mois;
-				}
 				if(($mois->nombreCapteursMois)>$maxTestMois)
 				{
 					$maxTestMois = $mois->nombreCapteursMois;
@@ -68,7 +65,7 @@
 			<maximum-annee><?=$listeCapteursAnnee->maximumAnnee?></maximum-annee>
 			<minimum-annee><?=$listeCapteursAnnee->minimumAnnee?></minimum-annee>
 			<mois-valeur-max><?=$moisValeurMax->mois?></mois-valeur-max>
-			<mois-valeur-min><?=$moisValeurMin?></mois-valeur-min>
+			<mois-valeur-min><?=$moisValeurMin->mois?></mois-valeur-min>
 			<mois-max-tests><?=$moisMaxTest?></mois-max-tests>
 			<mois-min-tests><?=$moisMinTest?></mois-min-tests>
 		</synthese>
