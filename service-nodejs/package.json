@@ -1,0 +1,15 @@
+{
+  "name": "capture",
+  "version": "1.0.0",
+  "description": "",
+  "main": "service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mariadb": "^2.0.0-alpha",
+    "pg": "^6.1.0"
+  }
+}
