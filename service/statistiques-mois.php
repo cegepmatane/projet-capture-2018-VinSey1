@@ -27,8 +27,12 @@
     $requeteJourMaxTests = $basededonnees->prepare($SQL_JOUR_MAX_TESTS);
     $requeteJourMaxTests->execute();
     $jourMaxTests = $requeteJourMaxTests->fetch(PDO::FETCH_OBJ);;
-
-
+		
+	$SQL_JOUR_MIN_TESTS = "SELECT DAY(date) as jour FROM (SELECT COUNT(valeur) as nombreCapteursJour, date FROM capteur GROUP BY DAY(date)) as nombreTests WHERE YEAR(date) =" . $annee . " AND MONTH(date) = " . $mois . "ORDER BY nombreCapteursJour ASC LIMIT 1";
+    $requeteJourMinTests = $basededonnees->prepare($SQL_JOUR_MIN_TESTS);
+    $requeteJourMinTests->execute();
+    $jourMinTests = $requeteJourMinTests->fetch(PDO::FETCH_OBJ);;
+	
 	if(!empty($listeCapteursJour))
 	{
 		$maxTestJour = $listeCapteursJour[0]->nombreCapteursJour;
