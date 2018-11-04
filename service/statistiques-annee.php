@@ -1,6 +1,7 @@
 <?php 
 	include "connexion.php";
 	$annee = $_GET['annee'];
+	
 	$SQL_LISTE_CAPTEURS_ANNEE = "SELECT COUNT(*) as nombreCapteursAnnee, AVG(valeur) as moyenneAnnee, MAX(valeur) as maximumAnnee, MIN(valeur) as minimumAnnee FROM capteur WHERE YEAR(date) = " . $annee;
 	$requeteListeCapteursAnnee = $basededonnees->prepare($SQL_LISTE_CAPTEURS_ANNEE);
 	$requeteListeCapteursAnnee->execute();
@@ -21,11 +22,12 @@
 	$requeteMoisValeurMin->execute();
 	$moisValeurMin = $requeteMoisValeurMin->fetch(PDO::FETCH_OBJ);;
 	
-	$SQL_MOIS_MAX_TESTS = "SELECT MONTH(date) as mois, MAX(nombreCapteursMois) as nombreTestsMax FROM (SELECT COUNT(valeur) as nombreCapteursMois, date FROM capteur GROUP BY MONTH(date)) as nombreCapteurs WHERE YEAR(date) =" . $annee;
-    $requeteMoisMaxTests = $basededonnees->prepare($SQL_MOIS_MAX_TESTS);
-    $requeteMoisMaxTests->execute();
-    $moisMaxTests = $requeteMoisMaxTests->fetch(PDO::FETCH_OBJ);;
-
+	$SQL_MOIS_MIN_TESTS = "SELECT MONTH(date) as mois FROM (SELECT COUNT(valeur) as nombreCapteursMois, date FROM capteur GROUP BY MONTH(date)) as nombreTests WHERE YEAR(date) =" . $annee . "ORDER BY nombreCapteursMois ASC LIMIT 1";
+    $requeteMoisMinTests = $basededonnees->prepare($SQL_MOIS_MIN_TESTS);
+    $requeteMoisMinTests->execute();
+    $moisMinTests = $requeteMoisMinTests->fetch(PDO::FETCH_OBJ);;
+	
+	
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
@@ -50,8 +52,8 @@
 			<minimum-annee><?=$listeCapteursAnnee->minimumAnnee?></minimum-annee>
 			<mois-valeur-max><?=$moisValeurMax->mois?></mois-valeur-max>
 			<mois-valeur-min><?=$moisValeurMin->mois?></mois-valeur-min>
-			<mois-max-tests><?=$moisMaxTests->mois?></mois-max-tests>
-			<mois-min-tests></mois-min-tests>
+			<mois-max-tests></mois-max-tests>
+			<mois-min-tests><?=$moisMinTests->mois?></mois-min-tests>
 		</synthese>
 	</statistiques>
 </statistiques-annee>
