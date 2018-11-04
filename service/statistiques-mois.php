@@ -21,14 +21,19 @@
 	$requeteJourValeurMin = $basededonnees->prepare($SQL_JOUR_VALEUR_MIN);
 	$requeteJourValeurMin->execute();
 	$jourValeurMin = $requeteJourValeurMin->fetch(PDO::FETCH_OBJ);;
+	
+	
+	$SQL_JOUR_MAX_TESTS = "SELECT DAY(date) as jour FROM (SELECT COUNT(valeur) as nombreCapteursJour, date FROM capteur GROUP BY DAY(date)) as nombreTests WHERE YEAR(date) =" . $annee . " AND MONTH(date) = " . $mois . " ORDER BY nombreCapteursJour DESC LIMIT 1";
+    $requeteJourMaxTests = $basededonnees->prepare($SQL_JOUR_MAX_TESTS);
+    $requeteJourMaxTests->execute();
+    $jourMaxTests = $requeteJourMaxTests->fetch(PDO::FETCH_OBJ);;
+
 
 	if(!empty($listeCapteursJour))
 	{
 		$maxTestJour = $listeCapteursJour[0]->nombreCapteursJour;
 		$minTestJour = $listeCapteursJour[0]->nombreCapteursJour;
 
-		$jourMaxTest = $listeCapteursJour[0]->jour;
-		$jourMinTest = $listeCapteursJour[0]->jour;
 	}
 	
 	header("Content-type: text/xml");
@@ -44,12 +49,12 @@
 				if(($jour->nombreCapteursJour)>$maxTestJour)
 				{
 					$maxTestJour = $jour->nombreCapteursJour;
-					$jourMaxTest=$jour->jour;
+					
 				}
 				if(($jour->nombreCapteursJour)<$minTestJour)
 				{
 					$minTestJour = $jour->nombreCapteursJour;
-					$jourMinTest=$jour->jour;
+					
 				}
 
 				?>
@@ -67,8 +72,8 @@
 			<minimum-mois><?=$listeCapteursMois->minimumMois?></minimum-mois>
 			<jour-valeur-max><?=$jourValeurMax->jour?></jour-valeur-max>
 			<jour-valeur-min><?=$jourValeurMin->jour?></jour-valeur-min>
-			<jour-max-tests><?=$jourMaxTest?></jour-max-tests>
-			<jour-min-tests><?=$jourMinTest?></jour-min-tests>
+
+			
 		</synthese>
 	</statistiques>
 </statistiques-mois>
