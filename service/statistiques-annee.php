@@ -22,12 +22,12 @@
 	$requeteMoisValeurMin->execute();
 	$moisValeurMin = $requeteMoisValeurMin->fetch(PDO::FETCH_OBJ);;
 	
-	$SQL_MOIS_MAX_TESTS = "SELECT MONTH(date) as mois FROM (SELECT COUNT(valeur) as nombreCapteursMois, date FROM capteur GROUP BY MONTH(date)) as nombreTests WHERE YEAR(date) =" . $annee . "ORDER BY nombreCapteursMois DESC LIMIT 1";
+	$SQL_MOIS_MAX_TESTS = "SELECT MONTH(date) as mois FROM (SELECT COUNT(valeur) as nombreCapteursMois, date FROM capteur GROUP BY MONTH(date)) as nombreTests WHERE YEAR(date) =" . $annee . " ORDER BY nombreCapteursMois DESC LIMIT 1";
     $requeteMoisMaxTests = $basededonnees->prepare($SQL_MOIS_MAX_TESTS);
     $requeteMoisMaxTests->execute();
     $moisMaxTests = $requeteMoisMaxTests->fetch(PDO::FETCH_OBJ);;
 	
-	$SQL_MOIS_MIN_TESTS = "SELECT MONTH(date) as mois FROM (SELECT COUNT(valeur) as nombreCapteursMois, date FROM capteur GROUP BY MONTH(date)) as nombreTests WHERE YEAR(date) =" . $annee . "ORDER BY nombreCapteursMois ASC LIMIT 1";
+	$SQL_MOIS_MIN_TESTS = "SELECT MONTH(date) as mois FROM (SELECT COUNT(valeur) as nombreCapteursMois, date FROM capteur GROUP BY MONTH(date)) as nombreTests WHERE YEAR(date) =" . $annee . " ORDER BY nombreCapteursMois ASC LIMIT 1";
     $requeteMoisMinTests = $basededonnees->prepare($SQL_MOIS_MIN_TESTS);
     $requeteMoisMinTests->execute();
     $moisMinTests = $requeteMoisMinTests->fetch(PDO::FETCH_OBJ);;
