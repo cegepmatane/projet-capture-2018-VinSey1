@@ -27,6 +27,11 @@
     $requeteHeureMaxTests = $basededonnees->prepare($SQL_HEURE_MAX_TESTS);
     $requeteHeureMaxTests->execute();
     $heureMaxTests = $requeteHeureMaxTests->fetch(PDO::FETCH_OBJ);;
+	
+	$SQL_HEURE_MIN_TESTS = "SELECT HOUR(date) as heure FROM (SELECT COUNT(valeur) as nombreCapteursHeure, date FROM capteur GROUP BY HOUR(date)) as nombreTests WHERE YEAR(date) =" . $annee . " AND MONTH(date) = " . $mois . " AND DAY(date) = " . $jour . " ORDER BY nombreCapteursHeure ASC LIMIT 1";
+    $requeteHeureMinTests = $basededonnees->prepare($SQL_HEURE_MIN_TESTS);
+    $requeteHeureMinTests->execute();
+    $heureMinTests = $requeteHeureMinTests->fetch(PDO::FETCH_OBJ);;
 
 	if(!empty($listeCapteursHeure))
 	{
@@ -70,7 +75,7 @@
 			<heure-valeur-max><?=$heureValeurMax->heure?></heure-valeur-max>
 			<heure-valeur-min><?=$heureValeurMin->heure?></heure-valeur-min>
 			<heure-max-tests><?=$heureMaxTests->heure?></heure-max-tests>
-			<heure-min-tests><?=$heureMinTests?></heure-min-tests>
+			<heure-min-tests><?=$heureMinTests->heure?></heure-min-tests>
 		</synthese>
 	</statistiques>
 </statistiques-jour>
