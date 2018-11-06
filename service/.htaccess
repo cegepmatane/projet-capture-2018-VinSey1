@@ -1,0 +1,7 @@
+RewriteEngine on
+RewriteRule ^capteur$ capteur.php [NC]
+RewriteRule ^capteurs$ capteurs.php [NC]
+RewriteRule ^connexion$ connexion.php [NC]
+RewriteRule ^statistiques-annee$ statistique-annee.php [NC]
+RewriteRule ^statistique-jour$ statistique-jour.php [NC]
+RewriteRule ^statistique-mois$ statistique-mois.php [NC]
