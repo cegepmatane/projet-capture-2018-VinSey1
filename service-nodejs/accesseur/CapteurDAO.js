@@ -1,14 +1,14 @@
-//var postgresql = require('pg');
-var mariadb = require('mariadb');
+var postgresql = require('pg');
+//var mariadb = require('mariadb');
 //var informationConnexion = "postgres://pseudo:mdp@localhost:5432/bd";
-//var informationConnexion = "postgres://postgres:sudoroot@localhost:5432/capteur";
-var informationConnexion = mariadb.createPool({ host: 'localhost', user: 'scientifique', password: 'password', database: 'capture', connectionLimit: 5 });
+var informationConnexion = "postgres://capture:password@localhost:5432/capteur";
+//var informationConnexion = mariadb.createPool({ host: 'localhost', user: 'scientifique', password: 'password', database: 'capture', connectionLimit: 5 });
 
 exports.ajouterCapteur = async function(capteur){
 	console.log("CapteurDAO.ajouterCapteur(" + JSON.stringify(capteur) + ")");
 
-	//var baseDeDonnees = new postgresql.Client(informationConnexion);
-	//await baseDeDonnees.connect();
+	var baseDeDonnees = new postgresql.Client(informationConnexion);
+	await baseDeDonnees.connect();
 	var baseDeDonnees = await informationConnexion.getConnection();
 
 	var sql = "insert into capteur(date, latitude, longitude, valeur) values('{{date}}','{{latitude}}','{{longitude}}','{{valeur}}');";
