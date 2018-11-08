@@ -1,12 +1,12 @@
 <?php 
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
-	include "connexion.php";
+	include "accesseur/capteurDAO.php";
 
-	$SQL_LISTE_CAPTEURS = "SELECT * FROM capteur";
-	$requeteListeCapteurs = $basededonnees->prepare($SQL_LISTE_CAPTEURS);
-	$requeteListeCapteurs->execute();
-	$listeCapteurs = $requeteListeCapteurs->fetchAll(PDO::FETCH_OBJ);
+	$capteurDao = new CapteurDAO;
+
+	$listeCapteurs = $capteurDao->listerCapteurs();
+	
 	
 ?>
 <capteurs>
