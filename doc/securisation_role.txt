@@ -1,14 +1,14 @@
 Création du rôle permettant de lire les XML :
 
-Création : CREATE ROLE capteurXML
-Don de droit de lecture : GRANT SELECT ON capteur to capteurXML
+Création : CREATE ROLE xmlcapture WITH LOGIN PASSWORD 'password'
+Don de droit de lecture : GRANT SELECT ON capteur to xmlcapture
 
 
 
 Création du rôle du service JSON :
 
-Création : CREATE ROLE capteurJSON
-Don de droit d'insertion : GRANT INSERT ON capteur to capteurJSON
+Création : CREATE ROLE jsoncapture WITH LOGIN PASSWORD 'password'
+Don de droit d'insertion : GRANT INSERT ON capteur to jsoncapture
 
 
 Affichage des rôles et de leur privlège : 
