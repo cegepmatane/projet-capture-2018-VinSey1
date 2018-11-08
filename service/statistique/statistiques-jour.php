@@ -1,5 +1,5 @@
 <?php 
-	include "accesseur/statistiqueDAO.php";
+	include "../accesseur/statistiqueDAO.php";
 	$jour = $_GET['jour'];
 	$mois = $_GET['mois'];
 	$annee = $_GET['annee'];

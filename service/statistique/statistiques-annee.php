@@ -1,5 +1,5 @@
 <?php 
-	include "accesseur/statistiqueDAO.php";
+	include "../accesseur/statistiqueDAO.php";
 	$annee = $_GET['annee'];
 
 	$statDao = new StatistiqueDAO;
