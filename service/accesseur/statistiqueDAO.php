@@ -1,6 +1,6 @@
 <?php
 include "connexion.php";
-class statistiqueDAO
+class StatistiqueDAO
 {
     function recevoirListeCapteurAnnee($annee)
     {

@@ -1,6 +1,6 @@
 <?php
 include "connexion.php";
-class capteurDAO
+class CapteurDAO
 {
     function listerCapteurs()
     {

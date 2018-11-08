@@ -1,12 +1,11 @@
 <?php 
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
-	include "connexion.php";
-	
-	$SQL_CAPTEUR = "SELECT * FROM capteur WHERE id = " . $_GET['id'];
-	$requeteCapteur = $basededonnees->prepare($SQL_CAPTEUR);
-	$requeteCapteur->execute();
-	$capteur = $requeteCapteur->fetch(PDO::FETCH_OBJ);
+	include "accesseur/capteurDAO.php";
+
+	$capteurDao = new CapteurDAO;
+	$id = $_GET['id'];
+	$capteur = $capteurDao-> recevoirCapteur($id);
 	
 ?>
 
