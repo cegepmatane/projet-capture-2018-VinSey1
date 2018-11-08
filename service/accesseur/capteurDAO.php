@@ -14,6 +14,7 @@ class CapteurDAO
 
     function recevoirCapteur($id)
     {
+        global $basededonnees;
         $SQL_CAPTEUR = "SELECT * FROM capteur WHERE id = " . $id;
 	    $requeteCapteur = $basededonnees->prepare($SQL_CAPTEUR);
 	    $requeteCapteur->execute();
