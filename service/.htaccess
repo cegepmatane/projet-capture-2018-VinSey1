@@ -1,7 +1,21 @@
+Options +FollowSymlinks
 RewriteEngine on
-RewriteRule ^capteur$ capteur.php [NC]
-RewriteRule ^capteurs$ capteurs.php [NC]
-RewriteRule ^connexion$ connexion.php [NC]
-RewriteRule ^statistiques-annee$ statistique-annee.php [NC]
-RewriteRule ^statistique-jour$ statistique-jour.php [NC]
-RewriteRule ^statistique-mois$ statistique-mois.php [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^pollution/capteur/([0-9]*)$ capture/capteur.php?id=$1 [QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^pollution/capteurs$ 		   capture/capteurs.php 
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^pollution/moyenne/annee/([0-9]*)$ capture/statistiques-annee.php?annee=$1 [QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^pollution/moyenne/jour/annee/([0-9]*)/mois/([0-9]*)/jour/([0-9]*)$ capture/statistiques-jour.php?annee=$1&mois=$2&jour=$3 [QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^pollution/moyenne/mois/annee/([0-9]*)/mois/([0-9]*)$ capture/statistiques-mois.php?annee=$1&mois=$2 [QSA]
