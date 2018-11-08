@@ -1,0 +1,19 @@
+Création du rôle permettant de lire les XML :
+
+Création : CREATE ROLE capteurXML
+Don de droit de lecture : GRANT SELECT ON capteur to capteurXML
+
+
+
+Création du rôle du service JSON :
+
+Création : CREATE ROLE capteurJSON
+Don de droit d'insertion : GRANT INSERT ON capteur to capteurJSON
+
+
+Affichage des rôles et de leur privlège : 
+
+SELECT grantee, privilege_type 
+FROM information_schema.role_table_grants 
+WHERE table_name='capteur'
+
