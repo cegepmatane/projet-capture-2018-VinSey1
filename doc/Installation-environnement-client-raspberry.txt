@@ -1,0 +1,5 @@
+Installer Python3
+	# apt update
+	# apt install pyhton3
+Installer pip3
+	# apt install python3-pip
