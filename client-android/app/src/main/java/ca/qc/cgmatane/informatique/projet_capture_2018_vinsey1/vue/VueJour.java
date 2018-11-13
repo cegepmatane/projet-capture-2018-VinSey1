@@ -1,4 +1,4 @@
-package ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1;
+package ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.vue;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.R;
+import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.donnee.CapteurDAO;
+
 public class VueJour extends AppCompatActivity {
 
     protected ListView vueListeDonnes;
+    private CapteurDAO  accesseurCapteur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +21,8 @@ public class VueJour extends AppCompatActivity {
         setContentView(R.layout.vue_jour);
         vueListeDonnes = findViewById(R.id.vue_liste_donnees);
         gestionnaireTailleListe(vueListeDonnes);
+
+        accesseurCapteur = CapteurDAO.getInstance();
     }
 
     private static void gestionnaireTailleListe(ListView listView) {
