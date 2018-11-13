@@ -14,8 +14,8 @@ RewriteRule ^pollution/moyenne/annee/([0-9]*)$ capture/statistique/statistiques-
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^pollution/moyenne/jour/annee/([0-9]*)/mois/([0-9]*)/jour/([0-9]*)$ capture/statistique/statistiques-jour.php?annee=$1&mois=$2&jour=$3 [QSA]
+RewriteRule ^pollution/moyenne/annee/([0-9]*)/mois/([0-9]*)/jour/([0-9]*)$ capture/statistique/statistiques-jour.php?annee=$1&mois=$2&jour=$3 [QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^pollution/moyenne/mois/annee/([0-9]*)/mois/([0-9]*)$ capture/statistique/statistiques-mois.php?annee=$1&mois=$2 [QSA]
+RewriteRule ^pollution/moyenne/annee/([0-9]*)/mois/([0-9]*)$ capture/statistique/statistiques-mois.php?annee=$1&mois=$2 [QSA]
