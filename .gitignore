@@ -2,3 +2,4 @@
 service-nodejs/node_modules/
 
 service-nodejs/package-lock\.json
+client-android/.idea/misc.xml
