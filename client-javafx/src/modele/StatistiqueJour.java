@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class StatistiqueJour {
 
     private String jour;
-    private int nombreDeTest;
+    private String nombreDeTest;
     private ArrayList<Heure> heures;
     private Synthese synthese;
 
@@ -22,11 +22,11 @@ public class StatistiqueJour {
         this.jour = jour;
     }
 
-    public int getNombreDeTest() {
+    public String getNombreDeTest() {
         return nombreDeTest;
     }
 
-    public void setNombreDeTest(int nombreDeTest) {
+    public void setNombreDeTest(String nombreDeTest) {
         this.nombreDeTest = nombreDeTest;
     }
 
