@@ -52,14 +52,14 @@
 				</heure>
 			<?php } ?>
 		</details>
-		<synthese>
-			<moyenne-jour><?=$listeCapteursJour->moyenneJour?></moyenne-jour>
-			<maximum-jour><?=$listeCapteursJour->maximumJour?></maximum-jour>
-			<minimum-jour><?=$listeCapteursJour->minimumJour?></minimum-jour>
-			<heure-valeur-max><?=$heureValeurMax->heure?></heure-valeur-max>
-			<heure-valeur-min><?=$heureValeurMin->heure?></heure-valeur-min>
-			<heure-max-tests><?=$heureMaxTests->heure?></heure-max-tests>
-			<heure-min-tests><?=$heureMinTests->heure?></heure-min-tests>
+		<synthese>		
+			<moyenne-jour><?=($listeCapteursJour !=null) ? $listeCapteursJour->moyenneJour:"";?></moyenne-jour>
+			<maximum-jour><?=($listeCapteursJour !=null) ? $listeCapteursJour->maximumJour:"";?></maximum-jour>
+			<minimum-jour><?=($listeCapteursJour !=null) ? $listeCapteursJour->minimumJour:"";?></minimum-jour>
+			<heure-valeur-max><?=($heureValeurMax !=null) ? $heureValeurMax->heure:"";?></heure-valeur-max>
+			<heure-valeur-min><?=($heureValeurMin !=null) ? $heureValeurMin->heure:"";?></heure-valeur-min>
+			<heure-max-tests><?=($heureMaxTests !=null) ? $heureMaxTests->heure:"";?></heure-max-tests>
+			<heure-min-tests><?=($heureMinTests !=null) ? $heureMinTests->heure:"";?></heure-min-tests>
 		</synthese>
 	</statistiques>
 </statistiques-jour>
