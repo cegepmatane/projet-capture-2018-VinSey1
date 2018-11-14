@@ -54,13 +54,13 @@
 			<?php } ?>
 		</details>
 		<synthese>
-			<moyenne-mois><?=$listeCapteursMois->moyenneMois?></moyenne-mois>
-			<maximum-mois><?=$listeCapteursMois->maximumMois?></maximum-mois>
-			<minimum-mois><?=$listeCapteursMois->minimumMois?></minimum-mois>
-			<jour-valeur-max><?=$jourValeurMax->jour?></jour-valeur-max>
-			<jour-valeur-min><?=$jourValeurMin->jour?></jour-valeur-min>
-			<jour-max-test><?=$jourMaxTests->jour?></jour-max-test>
-			<jour-min-test><?=$jourMinTests->jour?></jour-min-test>
+			<moyenne-mois><?=($listeCapteursMois !=null) ? $listeCapteursMois->moyenneMois:"";?></moyenne-mois>
+			<maximum-mois><?=($listeCapteursMois !=null) ? $listeCapteursMois->maximumMois:"";?></maximum-mois>
+			<minimum-mois><?=($listeCapteursMois !=null) ? $listeCapteursMois->minimumMois:"";?></minimum-mois>
+			<jour-valeur-max><?=($jourValeurMax !=null) ? $jourValeurMax->jour:"";?></jour-valeur-max>
+			<jour-valeur-min><?=($jourValeurMin !=null) ? $jourValeurMin->jour:"";?></jour-valeur-min>
+			<jour-max-test><?=($jourMaxTests !=null) ? $jourMaxTests->jour:"";?></jour-max-test>
+			<jour-min-test><?=($jourMinTests !=null) ? $jourMinTests->jour:"";?></jour-min-test>
 
 			
 		</synthese>
