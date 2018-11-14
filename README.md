@@ -12,8 +12,8 @@ Lien de l'analyse Google Doc : https://docs.google.com/document/d/1OX0U4ctMQKM9d
 Lien des services : http://158.69.192.249/capture/
 Service NodeJS : http://158.69.192.249:8080
 
-Lien de test de service statistique-année : http://158.69.192.249/capture/statistiques-annee.php?annee=2019
+Lien de test de service statistique-année : http://158.69.192.249/pollution/moyenne/annee/2019
 
-Lien de test de service statistique-mois : http://158.69.192.249/capture/statistiques-mois.php?mois=04&annee=2032
+Lien de test de service statistique-mois : http://158.69.192.249/pollution/moyenne/annee/2032/mois/04
 
-Lien de test de service statistique-jour : http://158.69.192.249/capture/statistiques-jour.php?jour=20&mois=04&annee=2032
+Lien de test de service statistique-jour : http://158.69.192.249/pollution/moyenne/annee/2032/mois/04/jour/20
