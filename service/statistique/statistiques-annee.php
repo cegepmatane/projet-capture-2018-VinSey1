@@ -37,13 +37,13 @@
 			<?php } ?>
 		</details>
 		<synthese>
-			<moyenne-annee><?=$listeCapteursAnnee->moyenneAnnee?></moyenne-annee>
-			<maximum-annee><?=$listeCapteursAnnee->maximumAnnee?></maximum-annee>
-			<minimum-annee><?=$listeCapteursAnnee->minimumAnnee?></minimum-annee>
-			<mois-valeur-max><?=$moisValeurMax->mois?></mois-valeur-max>
-			<mois-valeur-min><?=$moisValeurMin->mois?></mois-valeur-min>
-			<mois-max-tests><?=$moisMaxTests->mois?></mois-max-tests>
-			<mois-min-tests><?=$moisMinTests->mois?></mois-min-tests>
+			<moyenne-annee><?=($listeCapteursAnnee!=null) ? $listeCapteursAnnee->moyenneAnnee :"";?></moyenne-annee>
+			<maximum-annee><?=($listeCapteursAnnee!=null) ? $listeCapteursAnnee->maximumAnnee:"";?></maximum-annee>
+			<minimum-annee><?=($listeCapteursAnnee!=null) ? $listeCapteursAnnee->minimumAnnee:""?></minimum-annee>
+			<mois-valeur-max><?=($moisValeurMax!=null) ? $moisValeurMax->mois:"";?></mois-valeur-max>
+			<mois-valeur-min><?=($moisValeurMin!=null) ? $moisValeurMin->mois:"";?></mois-valeur-min>
+			<mois-max-tests><?=($moisMaxTests!=null) ? $moisMaxTests->mois:"";?></mois-max-tests>
+			<mois-min-tests><?=($moisMinTests!=null) ? $moisMinTests->mois:"";?></mois-min-tests>
 		</synthese>
 	</statistiques>
 </statistiques-annee>
