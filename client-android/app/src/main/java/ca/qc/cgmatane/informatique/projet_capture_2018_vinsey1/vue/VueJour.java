@@ -6,6 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import java.util.HashMap;
+import java.util.List;
 
 import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.R;
 import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.donnee.CapteurDAO;
@@ -14,15 +18,25 @@ public class VueJour extends AppCompatActivity {
 
     protected ListView vueListeDonnes;
     private CapteurDAO  accesseurCapteur;
+    protected List<HashMap<String, String>> listeHeuresPourAdapteur;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.vue_jour);
+
+        accesseurCapteur = CapteurDAO.getInstance();
+
         vueListeDonnes = findViewById(R.id.vue_liste_donnees);
         gestionnaireTailleListe(vueListeDonnes);
 
-        accesseurCapteur = CapteurDAO.getInstance();
+        afficherToutesLesHeures();
+    }
+
+    private void afficherToutesLesHeures() {
+        listeHeuresPourAdapteur = accesseurCapteur.recupererListeHeuresPourAdapteur();
+
+        //Faire l'adapteur
     }
 
     private static void gestionnaireTailleListe(ListView listView) {
