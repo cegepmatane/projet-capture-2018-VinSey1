@@ -10,21 +10,23 @@ var serveur = http.createServer((requete, reponse) => {
                                      (requete.connection.socket ? requete.connection.socket.remoteAddress : null);
 
 	if(CLEF_ECHANGE === authentificationClient){
+		console.log("Une personnage avec les droits d'acces s'est connectée");
+		var dateActuelle = new Date();
 		if('GET' === requete.method){
-			console.log("Requete GET de " + adresseIPRequete);
-			reponse.end('Requete GET recu par le serveur NodeJS.');
+			console.log("Requete GET de " + adresseIPRequete + ' @ ' + dateActuelle);
+			reponse.end('Requete GET recu par le serveur NodeJS @ ' + dateActuelle + '.');
 		}
 		if('POST' === requete.method){
-		        console.log("Requete POST de " + adresseIPRequete);
-			reponse.end("Requete POST recu par le serveur NodeJS.");
+		        console.log("Requete POST de " + adresseIPRequete + ' @ ' + dateActuelle);
+			reponse.end("Requete POST recu par le serveur NodeJS @ " + dateActuelle + ".");
 
         		var uri = '';
         		requete.on('data', message => { uri += message; });
 		        requete.on('end', function(){
 				uri = decodeURI(uri);
-
+				console.log("Donnees brutes recues sur le serveur : " + uri);
 				var capteur = JSON.parse(uri).capteur;
-//				capteurDAO.ajouterCapteur(capteur);
+				capteurDAO.ajouterCapteur(capteur);
         		});
 		}
 	} else {
@@ -39,3 +41,5 @@ var serveur = http.createServer((requete, reponse) => {
 	// cela les jettera dans le flux.
 	reponse.end('');
 }).listen(8080);
+
+console.log("Service en ligne !");

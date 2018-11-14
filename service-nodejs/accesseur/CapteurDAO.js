@@ -10,7 +10,7 @@ exports.ajouterCapteur = async function(capteur){
 
 	var sql = "insert into capteur(date, latitude, longitude, valeur) values('{{date}}','{{latitude}}','{{longitude}}','{{valeur}}');";
 	sql = sql.replace("{{date}}", capteur.pollution.date).replace("{{latitude}}", capteur.pollution.position.latitude).replace("{{longitude}}", capteur.pollution.position.longitude).replace("{{valeur}}", capteur.pollution.valeur);
-	
-	//console.log(sql);
-	baseDeDonnees.query(sql); //await 
+
+	console.log(sql);
+	baseDeDonnees.query(sql); //await
 }
