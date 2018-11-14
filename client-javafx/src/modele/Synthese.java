@@ -8,6 +8,13 @@ public class Synthese {
     private String heureValeurMin;
     private String heureMaxTests;
     private String heureMinTests;
+    private String moyenneMois;
+    private String maximumMois;
+    private String minimumMois;
+    private String jourValeurMax;
+    private String jourValeurMin;
+    private String jourMaxTest;
+    private String jourMinTest;
 
 
     public Synthese()
@@ -69,5 +76,61 @@ public class Synthese {
 
     public void setHeureMinTests(String heureMinTests) {
         this.heureMinTests = heureMinTests;
+    }
+
+    public String getMoyenneMois() {
+        return moyenneMois;
+    }
+
+    public void setMoyenneMois(String moyenneMois) {
+        this.moyenneMois = moyenneMois;
+    }
+
+    public String getMaximumMois() {
+        return maximumMois;
+    }
+
+    public void setMaximumMois(String maximumMois) {
+        this.maximumMois = maximumMois;
+    }
+
+    public String getMinimumMois() {
+        return minimumMois;
+    }
+
+    public void setMinimumMois(String minimumMois) {
+        this.minimumMois = minimumMois;
+    }
+
+    public String getJourValeurMax() {
+        return jourValeurMax;
+    }
+
+    public void setJourValeurMax(String jourValeurMax) {
+        this.jourValeurMax = jourValeurMax;
+    }
+
+    public String getJourValeurMin() {
+        return jourValeurMin;
+    }
+
+    public void setJourValeurMin(String jourValeurMin) {
+        this.jourValeurMin = jourValeurMin;
+    }
+
+    public String getJourMaxTest() {
+        return jourMaxTest;
+    }
+
+    public void setJourMaxTest(String jourMaxTest) {
+        this.jourMaxTest = jourMaxTest;
+    }
+
+    public String getJourMinTest() {
+        return jourMinTest;
+    }
+
+    public void setJourMinTest(String jourMinTest) {
+        this.jourMinTest = jourMinTest;
     }
 }
