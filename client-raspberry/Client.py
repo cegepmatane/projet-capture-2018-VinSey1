@@ -1,26 +1,34 @@
-import json
-import http.client
+import datetime
+import time
+import random
+from ServiceDAO import *
 
-connection = http.client.HTTPConnection("158.69.192.249:8080")
-enTetes = {'Content-type': 'application/json', 'Authentification' : 'capture'}
+class Client:
 
-contenuEnvoi = {
-		"capteur": {
-			"pollution": {
-    				"date": "2018-10-31 20:07:15",
-    				"position": {
-  					"latitude": "-34.213",
-					"longitude": "52.425"
-  				},
- 				"valeur": "42"
-			}
-		}
-}
-contenuEnvoiJSON = json.dumps(contenuEnvoi)
+    ADRESSE_SERVEUR = "158.69.192.249:8080"
+    AUTHENTIFICATION = "capture"
 
-connection.request("POST", "/", contenuEnvoiJSON, enTetes)
+    serviceDAO = ServiceDAO(ADRESSE_SERVEUR, AUTHENTIFICATION)
 
-reponse = connection.getresponse()
-print(reponse.read().decode())
+    while True:
+        tempsCourant = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+        position = {"latitude": 48.840689, "longitude": -67.497454}
+        valeur = random.randrange(120, 255)
 
-connection.close()
+        contenuEnvoi = {
+    		        "capteur": {
+			        "pollution": {
+				        "date": tempsCourant,
+				        "position": position,
+				        "valeur": valeur
+			        }
+		        }
+        }
+
+        reponse = serviceDAO.ajouter(contenuEnvoi)
+        print(reponse)
+        
+        time.sleep(60)
+
+    serviceDAO.fermerConnection()
+    print("Au revoir !")
