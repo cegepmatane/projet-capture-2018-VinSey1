@@ -3,7 +3,8 @@ Création du rôle permettant de lire les XML :
 Création : CREATE ROLE xmlcapture WITH LOGIN PASSWORD 'password'
 Don de droit de lecture : GRANT SELECT ON capteur to xmlcapture
 GRANT USAGE, SELECT ON SEQUENCE capteur_id_seq to xmlcapture
-
+ALTER ROLE xmlcapture SET statement_timeout=10000;
+ALTER ROLE xmlcapture CONNECTION LIMIT 2000;
 
 
 Création du rôle du service JSON :
