@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class StatistiqueDAO {
+public class StatistiqueDAO implements StatistiqueURL {
 
     private static StatistiqueDAO instance;
 
@@ -38,8 +38,10 @@ public class StatistiqueDAO {
         StatistiqueJour stat = new StatistiqueJour();
         ArrayList<Heure> heures = new ArrayList<>();
         Synthese synthese = new Synthese();
+        String urlRecu = JOUR_URL;
+        String[] urlSplit = urlRecu.split("-");
         try {
-            URL url = new URL("http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois +"/jour/" + jour);
+            URL url = new URL(urlSplit[0]+ annee +urlSplit[1]+ mois + urlSplit[2] + jour);
             DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = null;
 
@@ -103,10 +105,12 @@ public class StatistiqueDAO {
         ArrayList<Jour> jours = new ArrayList<>();
         Synthese synthese = new Synthese();
         //URL url = new URL("http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois);
+        String urlRecu = MOIS_URL;
 
+        String[] urlSplit = urlRecu.split("-");
         try
         {
-            URL url = new URL("http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois);
+            URL url = new URL( urlSplit[0] + annee + urlSplit[1] + mois);
 
             DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = null;
@@ -165,10 +169,10 @@ public class StatistiqueDAO {
         StatistiqueAnnee stat = new StatistiqueAnnee();
         ArrayList<Mois> mois = new ArrayList<>();
         Synthese synthese = new Synthese();
-
+        String urlRecu = ANNEE_URL;
         try
         {
-            URL url = new URL("http://158.69.192.249/pollution/moyenne/annee/"+ annee);
+            URL url = new URL(urlRecu + annee);
             DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = null;
             docBuilder = docbuildFactory.newDocumentBuilder();
