@@ -39,8 +39,11 @@ public class CapteurDAO {
         String[] dateCoupee = date.split("/");
         jour = date;
         try {
+            //Requete avec le jour du lancement de l'application
             //xml = accesseurService.execute("http://158.69.192.249/pollution/moyenne/annee/"+dateCoupee[2]+"/mois/"+dateCoupee[1]+"/jour/"+dateCoupee[0], "</statistiques-jour>").get();
+            //Requete pour avoir des valeurs
             xml = accesseurService.execute("http://158.69.192.249/pollution/moyenne/annee/2032/mois/04/jour/20", "</statistiques-jour>").get();
+            //FAIRE SECURISATION
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

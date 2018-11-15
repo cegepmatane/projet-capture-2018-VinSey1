@@ -114,8 +114,8 @@
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="320dp"
-        android:layout_height="278dp"
+        android:layout_width="382dp"
+        android:layout_height="119dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bordure"
         android:padding="2dp"
@@ -132,10 +132,7 @@
             <ListView
                 android:id="@+id/vue_liste_donnees"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:background="@drawable/bordure"
-                android:padding="2dp" />
+                android:layout_height="117dp" />
         </LinearLayout>
     </ScrollView>
 
