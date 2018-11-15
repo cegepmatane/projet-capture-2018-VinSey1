@@ -23,7 +23,7 @@ public class CapteurDAO {
 
     private static CapteurDAO instance = null;
     private ServiceDAO accesseurService;
-    private String xml, nombreTests, moyenneJour, maximumJour, minimumJour, heureValeurMax, heureValeurMin, heureMaximumTests, heureMinimumTests;
+    private String xml, jour, nombreTests, moyenneJour, maximumJour, minimumJour, heureValeurMax, heureValeurMin, heureMaximumTests, heureMinimumTests;
     private List<Heure> listeHeures;
 
     public static CapteurDAO getInstance(){
@@ -37,8 +37,13 @@ public class CapteurDAO {
         accesseurService = new ServiceDAO();
         String date = new SimpleDateFormat("dd/MM/yyyy").format(System.currentTimeMillis());
         String[] dateCoupee = date.split("/");
+        jour = date;
         try {
-            xml = accesseurService.execute("http://158.69.192.249/pollution/moyenne/annee/"+dateCoupee[2]+"/mois/"+dateCoupee[1]+"/jour/"+dateCoupee[0], "</statistiques-jour>").get();
+            //Requete avec le jour du lancement de l'application
+            //xml = accesseurService.execute("http://158.69.192.249/pollution/moyenne/annee/"+dateCoupee[2]+"/mois/"+dateCoupee[1]+"/jour/"+dateCoupee[0], "</statistiques-jour>").get();
+            //Requete pour avoir des valeurs
+            xml = accesseurService.execute("http://158.69.192.249/pollution/moyenne/annee/2032/mois/04/jour/20", "</statistiques-jour>").get();
+            //FAIRE SECURISATION
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -60,7 +65,6 @@ public class CapteurDAO {
         DocumentBuilder parseur = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = parseur.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
         NodeList listeNoeudHeures = document.getElementsByTagName("heure");
-
         for(int iterateur = 0; iterateur < listeNoeudHeures.getLength(); iterateur++){
             Element noeudHeure = (Element) listeNoeudHeures.item(iterateur);
 
@@ -81,6 +85,7 @@ public class CapteurDAO {
         heureValeurMin = document.getElementsByTagName("heure-valeur-min").item(0).getTextContent();
         heureMaximumTests = document.getElementsByTagName("heure-max-tests").item(0).getTextContent();
         heureMinimumTests = document.getElementsByTagName("heure-min-tests").item(0).getTextContent();
+        nombreTests = document.getElementsByTagName("nombre-tests").item(0).getTextContent();
     }
 
     public List<HashMap<String,String>> recupererListeHeuresPourAdapteur() {
@@ -89,6 +94,14 @@ public class CapteurDAO {
             listeHeuresPourAdaptateur.add(heure.obtenirHeurePourAdapteur());
         }
         return listeHeuresPourAdaptateur;
+    }
+
+    public List<Heure> getListeHeures(){
+        return listeHeures;
+    }
+
+    public String getJour() {
+        return jour;
     }
 
     public String getNombreTests() {
