@@ -1,8 +1,6 @@
 package accesseur;
 
-import modele.Heure;
-import modele.StatistiqueJour;
-import modele.Synthese;
+import modele.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -65,8 +63,8 @@ public class StatistiqueDAO {
                     Heure heure = new Heure();
                     heure.setHoraire(element.getElementsByTagName("horaire").item(0).getTextContent());
                     heure.setMoyenne(element.getElementsByTagName("moyenne").item(0).getTextContent());
-                    heure.setHoraire(element.getElementsByTagName("maximum").item(0).getTextContent());
-                    heure.setHoraire(element.getElementsByTagName("minimum").item(0).getTextContent());
+                    heure.setMaximum(element.getElementsByTagName("maximum").item(0).getTextContent());
+                    heure.setMinimum(element.getElementsByTagName("minimum").item(0).getTextContent());
 
                     heures.add(heure);
                 }
@@ -78,7 +76,7 @@ public class StatistiqueDAO {
             synthese.setMinimumJour(element.getElementsByTagName("minimum-jour").item(0).getTextContent());
             synthese.setHeureValeurMax(element.getElementsByTagName("heure-valeur-max").item(0).getTextContent());
             synthese.setHeureValeurMin(element.getElementsByTagName("heure-valeur-min").item(0).getTextContent());
-            synthese.setHeureMaxTests(element.getElementsByTagName("heure-valeur-min").item(0).getTextContent());
+            synthese.setHeureMaxTests(element.getElementsByTagName("heure-max-tests").item(0).getTextContent());
             synthese.setHeureMinTests(element.getElementsByTagName("heure-min-tests").item(0).getTextContent());
 
             stat.setHeures(heures);
@@ -99,4 +97,64 @@ public class StatistiqueDAO {
 
 
     }
+
+    public StatistiqueMois recevoirStatistiqueMois(int annee, int mois)
+    {
+        StatistiqueMois stat = new StatistiqueMois();
+        ArrayList<Jour> jours = new ArrayList<>();
+        Synthese synthese = new Synthese();
+        String url = "http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois;
+        try {
+
+        File fichierXml = new File(url);
+        DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = null;
+        docBuilder = docbuildFactory.newDocumentBuilder();
+        Document document = docBuilder.parse(fichierXml);
+        document.getDocumentElement().normalize();
+        stat.setMois(document.getElementsByTagName("mois").item(0).getTextContent());
+        stat.setNombreTests(document.getElementsByTagName("nombre-tests").item(0).getTextContent());
+
+
+            NodeList nodeList = document.getElementsByTagName("jour");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    Jour jour = new Jour();
+                    jour.setDate(element.getElementsByTagName("date").item(0).getTextContent());
+                    jour.setMoyenne(element.getElementsByTagName("moyenne").item(0).getTextContent());
+                    jour.setMaximum(element.getElementsByTagName("maximum").item(0).getTextContent());
+                    jour.setMinimum(element.getElementsByTagName("minimum").item(0).getTextContent());
+
+                    jours.add(jour);
+                }
+            }
+            Node node = document.getElementsByTagName("synthese").item(0);
+            Element element = (Element) node;
+            synthese.setMoyenneMois(element.getElementsByTagName("moyenne-mois").item(0).getTextContent());
+            synthese.setMaximumJour(element.getElementsByTagName("maximum-mois").item(0).getTextContent());
+            synthese.setMinimumJour(element.getElementsByTagName("minimum-mois").item(0).getTextContent());
+            synthese.setHeureValeurMax(element.getElementsByTagName("jour-valeur-max").item(0).getTextContent());
+            synthese.setHeureValeurMin(element.getElementsByTagName("jour-valeur-min").item(0).getTextContent());
+            synthese.setHeureMaxTests(element.getElementsByTagName("jour-max-test").item(0).getTextContent());
+            synthese.setHeureMinTests(element.getElementsByTagName("jour-min-test").item(0).getTextContent());
+
+            stat.setJours(jours);
+            stat.setSynthese(synthese);
+            return stat;
+
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+
 }
