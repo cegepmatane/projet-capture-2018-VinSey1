@@ -12,7 +12,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class VueJour extends Scene
 {
@@ -20,6 +26,7 @@ public class VueJour extends Scene
     protected VBox vboxPrincipal;
     protected ScrollPane scrollPanelisteTest;
     protected Text textNombreTest;
+    private LocalDate date = null;
 
     private Controleur controleur = null;
 
@@ -53,18 +60,34 @@ public class VueJour extends Scene
         vboxGauche.setFillWidth(true);
         HBox jour = new HBox();
         Text textJour = new Text("Jour : ");
+
+
         DatePicker selectionDate = new DatePicker();
+        Button actionAfficherListe = new Button();
+        actionAfficherListe.setText("Selectionner date");
+        actionAfficherListe.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                //ACTION AFFICHER LISTE AVEC DATE
+                date = selectionDate.getValue();
+                Instant instant = Instant.from(date.atStartOfDay(ZoneId.systemDefault()));
+                Date dateFormatee = Date.from(instant);
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String strDate = dateFormat.format(dateFormatee);
+                listerTests(strDate);
+            }
+        });
         //TODO SELECTION DATE
+
+
         jour.getChildren().addAll(textJour,selectionDate);
         textNombreTest = new Text("Nombre de test : ");
         //TODO Ajouter valeur
         /*****************************************************************/
         //LISTE VALEURS TODO AJOUTER VALEURS
         scrollPanelisteTest = new ScrollPane();
-        //listerTests();
-
-
-        vboxGauche.getChildren().addAll(jour,textNombreTest,scrollPanelisteTest);
+        vboxGauche.getChildren().addAll(jour,actionAfficherListe,textNombreTest,scrollPanelisteTest);
         /*****************************************************************/
         //Valeur du jour + Synthese des heures et Boutons - Partie Droite
 
@@ -74,17 +97,17 @@ public class VueJour extends Scene
 
         HBox hboxValeurMoyenne = new HBox();
         Text moyenneValeursTitre = new Text("Moyenne des valeurs : ");
-        Text moyenneValeursValeur = new Text("oui");
+        Text moyenneValeursValeur = new Text("");
         hboxValeurMoyenne.getChildren().addAll(moyenneValeursTitre,moyenneValeursValeur);
 
         HBox hboxValeurPlusElevee = new HBox();
         Text valeurPlusEleveeTitre = new Text("Valeur la plus elevee : ");
-        Text valeurPlusEleveeValeur = new Text("oui");
+        Text valeurPlusEleveeValeur = new Text("");
         hboxValeurPlusElevee.getChildren().addAll(valeurPlusEleveeTitre,valeurPlusEleveeValeur);
 
         HBox hboxValeurPlusFaible = new HBox();
         Text valeurPlusFaibleTitre = new Text("Valeur la plus faible : ");
-        Text valeurPlusFaibleValeur = new Text("oui");
+        Text valeurPlusFaibleValeur = new Text("");
         hboxValeurPlusFaible.getChildren().addAll(valeurPlusFaibleTitre,valeurPlusFaibleValeur);
         //TODO Ajouter les valeurs
         vboxValeursDujour.getChildren().addAll(hboxValeurMoyenne,hboxValeurPlusElevee,hboxValeurPlusFaible);
@@ -121,7 +144,8 @@ public class VueJour extends Scene
         actionNaviguerStatistiquesMois.setText("Statistiques par mois");
         actionNaviguerStatistiquesMois.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
 
             }
         });
@@ -145,10 +169,10 @@ public class VueJour extends Scene
 
     }
 
-    /*public void listerTests()
+    public void listerTests(String date)
     {
-
-    }*/
+        System.out.println(date);
+    }
 
     public void setControleur(Controleur controleur)
     {
