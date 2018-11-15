@@ -10,7 +10,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -202,11 +201,12 @@ public class StatistiqueDAO {
             synthese.setMinimumAnnee(element.getElementsByTagName("minimum-annee").item(0).getTextContent());
             synthese.setMoisValeurMax(element.getElementsByTagName("mois-valeur-max").item(0).getTextContent());
             synthese.setMoisValeurMin(element.getElementsByTagName("mois-valeur-min").item(0).getTextContent());
-            synthese.setMoisMaxTests(element.getElementsByTagName("mois-max-test").item(0).getTextContent());
-            synthese.setMoisMinTests(element.getElementsByTagName("mois-min-test").item(0).getTextContent());
+            synthese.setMoisMaxTests(element.getElementsByTagName("mois-max-tests").item(0).getTextContent());
+            synthese.setMoisMinTests(element.getElementsByTagName("mois-min-tests").item(0).getTextContent());
 
             stat.setMois(mois);
             stat.setSynthese(synthese);
+            return stat;
 
     } catch (ParserConfigurationException e) {
         e.printStackTrace();

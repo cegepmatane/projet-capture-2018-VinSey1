@@ -37,10 +37,6 @@ public class VueJour extends Scene
     protected Text heurePlusDeTestValeur;
     protected Text heureMoinsDeTestValeur;
 
-
-
-
-
     private LocalDate date = null;
 
     private Controleur controleur = null;
@@ -48,7 +44,7 @@ public class VueJour extends Scene
 
     public VueJour()
     {
-        super(new StackPane(),800,800);
+        super(new StackPane(),600,600);
         racine = (StackPane) this.getRoot();
     }
 
@@ -174,8 +170,9 @@ public class VueJour extends Scene
         actionNaviguerStatistiquesAnnee.setText("Statistiques par annee");
         actionNaviguerStatistiquesAnnee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-
+            public void handle(ActionEvent event)
+            {
+                controleur.notifierNaviguerVueAnnee();
             }
         });
         vboxBoutons.getChildren().addAll(actionNaviguerStatistiquesMois,actionNaviguerStatistiquesAnnee);
@@ -244,7 +241,7 @@ public class VueJour extends Scene
             scrollPanelisteTest.setContent(vboxListeHeures);
             scrollPanelisteTest.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
-            System.out.println(heure.getHoraire());
+            //System.out.println(heure.getHoraire());
 
         }
 

@@ -10,6 +10,7 @@ public class NavigateurDesVues extends Application
 
     private VueJour vueJour = null;
     private  VueMois vueMois = null;
+    private VueAnnee vueAnnee = null;
 
     private Controleur controleur = null;
 
@@ -17,6 +18,7 @@ public class NavigateurDesVues extends Application
     {
         this.vueJour = new VueJour();
         this.vueMois = new VueMois();
+        this.vueAnnee = new VueAnnee();
     }
 
     public void start(Stage stade) throws Exception
@@ -29,8 +31,7 @@ public class NavigateurDesVues extends Application
 
         this.vueJour.setControleur(controleur);
         this.vueMois.setControleur(controleur);
-
-
+        this.vueAnnee.setControleur(controleur);
     }
 
     public VueJour getVueJour()
@@ -41,6 +42,11 @@ public class NavigateurDesVues extends Application
     public VueMois getVueMois()
     {
         return this.vueMois;
+    }
+
+    public VueAnnee getVueAnnee()
+    {
+        return this.vueAnnee;
     }
 
     public void naviguerVersVueJour()
@@ -54,6 +60,13 @@ public class NavigateurDesVues extends Application
         stade.setScene(this.vueMois);
         stade.show();
         this.vueMois.afficherVueMois();
+    }
+
+    public void naviguerVersVueAnnee()
+    {
+        stade.setScene(this.vueAnnee);
+        stade.show();
+        this.vueAnnee.afficherVueAnnee();
     }
 
 

@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import modele.Mois;
+import modele.StatistiqueAnnee;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,13 +26,22 @@ public class VueAnnee extends Scene {
     protected StackPane racine;
     protected VBox vboxPrincipal;
     protected ScrollPane scrollPanelisteTest;
-    protected Text textNombreTest;
+    protected VBox vboxListeMois;
+    protected Text textNombreTestValeur;
     private LocalDate date = null;
+
+    protected Text moyenneValeursValeur;
+    protected Text valeurPlusEleveeValeur;
+    protected Text valeurPlusFaibleValeur;
+    protected Text moisPlusPollueValeur;
+    protected Text moisMoinsPollueValeur;
+    protected Text moisPlusDeTestValeur;
+    protected Text moisMoinsDeTestValeur;
 
     private Controleur controleur = null;
 
     public VueAnnee() {
-        super(new StackPane(),800,800);
+        super(new StackPane(),600,600);
         racine = (StackPane) this.getRoot();
     }
 
@@ -42,6 +53,7 @@ public class VueAnnee extends Scene {
 
         HBox hboxTitre = new HBox();
         VBox vboxTitre = new VBox();
+        vboxListeMois = new VBox();
 
         Text titreHaut = new Text("Statistiques de l'application");
         Text titreBas = new Text("Par année");
@@ -72,20 +84,21 @@ public class VueAnnee extends Scene {
                 Date dateFormatee = Date.from(instant);
                 DateFormat dateFormat = new SimpleDateFormat("yyyy");
                 String strDate = dateFormat.format(dateFormatee);
-                System.out.print(strDate);
-
+                System.out.println(strDate);
+                controleur.notifierChangementDateAnnee(strDate);
             }
         });
-        //TODO SELECTION DATE
-
 
         annee.getChildren().addAll(textAnnee,selectionDate);
-        textNombreTest = new Text("Nombre de test : ");
-        //TODO Ajouter valeur
+        HBox hboxNombreTest = new HBox();
+        Text textNombreTestTitre = new Text("Nombre de test : ");
+        textNombreTestValeur = new Text();
+        hboxNombreTest.getChildren().addAll(textNombreTestTitre,textNombreTestValeur);
+
         /*****************************************************************/
-        //LISTE VALEURS TODO AJOUTER VALEURS
+        //LISTE VALEURS
         scrollPanelisteTest = new ScrollPane();
-        vboxGauche.getChildren().addAll(annee,actionAfficherListe,textNombreTest,scrollPanelisteTest);
+        vboxGauche.getChildren().addAll(annee,actionAfficherListe,hboxNombreTest,scrollPanelisteTest);
         /*****************************************************************/
         //Valeur de Annee + Synthese des mois et Boutons - Partie Droite
 
@@ -95,19 +108,19 @@ public class VueAnnee extends Scene {
 
         HBox hboxValeurMoyenne = new HBox();
         Text moyenneValeursTitre = new Text("Moyenne des valeurs : ");
-        Text moyenneValeursValeur = new Text("");
+        moyenneValeursValeur = new Text("");
         hboxValeurMoyenne.getChildren().addAll(moyenneValeursTitre,moyenneValeursValeur);
 
         HBox hboxValeurPlusElevee = new HBox();
         Text valeurPlusEleveeTitre = new Text("Valeur la plus elevee : ");
-        Text valeurPlusEleveeValeur = new Text("");
+        valeurPlusEleveeValeur = new Text("");
         hboxValeurPlusElevee.getChildren().addAll(valeurPlusEleveeTitre,valeurPlusEleveeValeur);
 
         HBox hboxValeurPlusFaible = new HBox();
         Text valeurPlusFaibleTitre = new Text("Valeur la plus faible : ");
-        Text valeurPlusFaibleValeur = new Text("");
+        valeurPlusFaibleValeur = new Text("");
         hboxValeurPlusFaible.getChildren().addAll(valeurPlusFaibleTitre,valeurPlusFaibleValeur);
-        //TODO Ajouter les valeurs
+
         vboxValeursDeAnnee.getChildren().addAll(hboxValeurMoyenne,hboxValeurPlusElevee,hboxValeurPlusFaible);
 
 
@@ -116,46 +129,46 @@ public class VueAnnee extends Scene {
 
         HBox hboxMoisPlusPollue = new HBox();
         Text moisPlusPollueTitre = new Text("Mois le plus pollue : ");
-        Text moisPlusPollueValeur = new Text("10" + "h");
+        moisPlusPollueValeur = new Text("");
         hboxMoisPlusPollue.getChildren().addAll(moisPlusPollueTitre,moisPlusPollueValeur);
 
         HBox hboxMoisMoinsPollue = new HBox();
         Text moisMoinsPollueTitre = new Text("Mois la moins polluee : ");
-        Text moisMoinsPollueValeur = new Text("8" + "h");
+        moisMoinsPollueValeur = new Text("");
         hboxMoisMoinsPollue.getChildren().addAll(moisMoinsPollueTitre,moisMoinsPollueValeur);
 
         HBox hboxMoisPlusDeTest = new HBox();
         Text moisPlusDeTestTitre = new Text("Mois avec le plus de test : ");
-        Text moisPlusDeTestValeur = new Text("15" + "h");
+        moisPlusDeTestValeur = new Text("");
         hboxMoisPlusDeTest.getChildren().addAll(moisPlusDeTestTitre,moisPlusDeTestValeur);
 
         HBox hboxMoisMoinsDeTest = new HBox();
         Text moisMoinsDeTestTitre = new Text("Mois avec le moins de tests : ");
-        Text moisMoinsDeTestValeur = new Text("16" + "h");
+        moisMoinsDeTestValeur = new Text("");
         hboxMoisMoinsDeTest.getChildren().addAll(moisMoinsDeTestTitre,moisMoinsDeTestValeur);
 
-        //TODO Ajouter les valeurs
         vboxSyntheseMois.getChildren().addAll(hboxMoisPlusPollue,hboxMoisMoinsPollue,hboxMoisPlusDeTest,hboxMoisMoinsDeTest);
 
         VBox vboxBoutons = new VBox();
+        Button actionNaviguerStatistiquesJour = new Button();
+        actionNaviguerStatistiquesJour.setText("Statistiques par jour");
+        actionNaviguerStatistiquesJour.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                controleur.notifierNaviguerVueJour();
+            }
+        });
         Button actionNaviguerStatistiquesMois = new Button();
         actionNaviguerStatistiquesMois.setText("Statistiques par mois");
         actionNaviguerStatistiquesMois.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event)
             {
-
+                controleur.notifierNaviguerVueMois();
             }
         });
-        Button actionNaviguerStatistiquesAnnee = new Button();
-        actionNaviguerStatistiquesAnnee.setText("Statistiques par annee");
-        actionNaviguerStatistiquesAnnee.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-            }
-        });
-        vboxBoutons.getChildren().addAll(actionNaviguerStatistiquesMois,actionNaviguerStatistiquesAnnee);
+        vboxBoutons.getChildren().addAll(actionNaviguerStatistiquesJour,actionNaviguerStatistiquesMois);
 
         vboxDroite.getChildren().addAll(valeurAnneeTitre,vboxValeursDeAnnee,syntheseMoisTitre,vboxSyntheseMois,vboxBoutons);
 
@@ -164,6 +177,66 @@ public class VueAnnee extends Scene {
         vboxPrincipal.getChildren().add(centre);
         racine.getChildren().add(vboxPrincipal);
         /*****************************************************************/
+
+    }
+
+    public void listerTests(StatistiqueAnnee statistiqueAnnee)
+    {
+        vboxListeMois.getChildren().clear();
+
+        textNombreTestValeur.setText(statistiqueAnnee.getNombreTests());
+        moyenneValeursValeur.setText(statistiqueAnnee.getSynthese().getMoyenneAnnee());
+
+        valeurPlusEleveeValeur.setText(statistiqueAnnee.getSynthese().getMaximumAnnee());
+        valeurPlusFaibleValeur.setText(statistiqueAnnee.getSynthese().getMinimumAnnee());
+
+        moisPlusPollueValeur.setText(statistiqueAnnee.getSynthese().getMoisValeurMax());
+        moisMoinsPollueValeur.setText(statistiqueAnnee.getSynthese().getMoisValeurMin());
+
+        moisPlusDeTestValeur.setText(statistiqueAnnee.getSynthese().getMoisMaxTests());
+        moisMoinsDeTestValeur.setText(statistiqueAnnee.getSynthese().getMoisMinTests());
+
+        for (Mois mois:statistiqueAnnee.getMois())
+        {
+            HBox hboxPrincipalMois= new HBox();
+
+            VBox vboxMois = new VBox();
+            Text textMois = new Text("Mois");
+            Text textValeurMois = new Text(mois.getDate());
+            vboxMois.getChildren().addAll(textMois,textValeurMois);
+
+            VBox vBoxValeursMois = new VBox();
+            Text textTitreValeurs = new Text("Valeurs (en g/m3)");
+
+            HBox hboxPrincipalValeurs = new HBox();
+
+            VBox vboxMoyenneMois = new VBox();
+            Text textMoyenneTitre = new Text("Moyenne");
+            Text textMoyenneValeur = new Text(mois.getMoyenne());
+            vboxMoyenneMois.getChildren().addAll(textMoyenneTitre,textMoyenneValeur);
+
+            VBox vboxMaximumMois = new VBox();
+            Text textMaximumTitre = new Text("Maximum");
+            Text textMaximumValeur = new Text(mois.getMaximum());
+            vboxMaximumMois.getChildren().addAll(textMaximumTitre,textMaximumValeur);
+
+            VBox vboxMinimumMois = new VBox();
+            Text textMinimumTitre = new Text("Minimum");
+            Text textMinimumValeur = new Text(mois.getMinimum());
+            vboxMinimumMois.getChildren().addAll(textMinimumTitre,textMinimumValeur);
+
+            hboxPrincipalValeurs.getChildren().addAll(vboxMoyenneMois,vboxMaximumMois,vboxMinimumMois);
+
+            vBoxValeursMois.getChildren().addAll(textTitreValeurs,hboxPrincipalValeurs);
+
+            hboxPrincipalMois.getChildren().addAll(vboxMois,vBoxValeursMois);
+            vboxListeMois.getChildren().add(hboxPrincipalMois);
+            scrollPanelisteTest.setContent(vboxListeMois);
+            scrollPanelisteTest.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+            //System.out.println(heure.getHoraire());
+
+        }
 
     }
 

@@ -42,7 +42,7 @@ public class VueMois extends Scene {
     private Controleur controleur = null;
 
     public VueMois() {
-        super(new StackPane(),800,800);
+        super(new StackPane(),600,600);
         racine = (StackPane) this.getRoot();
     }
 
@@ -150,24 +150,25 @@ public class VueMois extends Scene {
         vboxSyntheseJours.getChildren().addAll(hboxJourPlusPollue,hboxJourMoinsPollue,hboxJourPlusDeTest,hboxJourMoinsDeTest);
 
         VBox vboxBoutons = new VBox();
-        Button actionNaviguerStatistiquesMois = new Button();
-        actionNaviguerStatistiquesMois.setText("Statistiques par jour");
-        actionNaviguerStatistiquesMois.setOnAction(new EventHandler<ActionEvent>() {
+        Button actionNaviguerStatistiquesJour = new Button();
+        actionNaviguerStatistiquesJour.setText("Statistiques par jour");
+        actionNaviguerStatistiquesJour.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event)
             {
-
+                controleur.notifierNaviguerVueJour();
             }
         });
         Button actionNaviguerStatistiquesAnnee = new Button();
         actionNaviguerStatistiquesAnnee.setText("Statistiques par annee");
         actionNaviguerStatistiquesAnnee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-
+            public void handle(ActionEvent event)
+            {
+                controleur.notifierNaviguerVueAnnee();
             }
         });
-        vboxBoutons.getChildren().addAll(actionNaviguerStatistiquesMois,actionNaviguerStatistiquesAnnee);
+        vboxBoutons.getChildren().addAll(actionNaviguerStatistiquesJour,actionNaviguerStatistiquesAnnee);
 
         vboxDroite.getChildren().addAll(valeurMoisTitre,vboxValeursDuMois,syntheseJoursTitre,vboxSyntheseJours,vboxBoutons);
 
