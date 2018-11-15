@@ -1,18 +1,27 @@
 package ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.vue;
 
+import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
 
 import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.R;
 import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.donnee.CapteurDAO;
+import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.modele.Heure;
 
 public class VueJour extends AppCompatActivity {
 
@@ -31,12 +40,34 @@ public class VueJour extends AppCompatActivity {
         gestionnaireTailleListe(vueListeDonnes);
 
         afficherToutesLesHeures();
+
+        TextView jour = findViewById(R.id.valeur_jour);
+        TextView nombreTests = findViewById(R.id.valeur_tests);
+        TextView moyenne = findViewById(R.id.valeur_moyenne);
+        TextView maximum = findViewById(R.id.valeur_maximum);
+        TextView minimum = findViewById(R.id.valeur_minimum);
+        TextView heureMinimum = findViewById(R.id.valeur_heure_minimum);
+        TextView heureMaximum = findViewById(R.id.valeur_heure_maximum);
+        TextView heureMinimumTests = findViewById(R.id.valeur_heure_minimum_tests);
+        TextView heureMaximumTests = findViewById(R.id.valeur_heure_maximum_tests);
+
+        jour.setText(accesseurCapteur.getJour());
+        nombreTests.setText(accesseurCapteur.getNombreTests());
+        moyenne.setText(accesseurCapteur.getMoyenneJour());
+        maximum.setText(accesseurCapteur.getMaximumJour());
+        minimum.setText(accesseurCapteur.getMinimumJour());
+        heureMaximum.setText(accesseurCapteur.getHeureValeurMax());
+        heureMinimum.setText(accesseurCapteur.getHeureValeurMin());
+        heureMinimumTests.setText(accesseurCapteur.getHeureMinimumTests());
+        heureMaximumTests.setText(accesseurCapteur.getHeureMaximumTests());
     }
 
     private void afficherToutesLesHeures() {
         listeHeuresPourAdapteur = accesseurCapteur.recupererListeHeuresPourAdapteur();
 
-        //Faire l'adapteur
+        HeureAdapteur adapteur = new HeureAdapteur(this, accesseurCapteur.getListeHeures());
+
+        vueListeDonnes.setAdapter(adapteur);
     }
 
     private static void gestionnaireTailleListe(ListView listView) {
@@ -58,5 +89,55 @@ public class VueJour extends AppCompatActivity {
         ViewGroup.LayoutParams parametres = listView.getLayoutParams();
         parametres.height = hauteurTotale + (listView.getDividerHeight() * (adapteurListe.getCount() - 1));
         listView.setLayoutParams(parametres);
+    }
+
+    protected class HeureAdapteur extends BaseAdapter {
+
+        private List<Heure> listeHeures;
+        private Context contexte;
+        private LayoutInflater gestionnairePagination;
+
+
+        public HeureAdapteur(Context contexte, List<Heure> listeHeures){
+            this.contexte = contexte;
+            this.listeHeures = listeHeures;
+            this.gestionnairePagination = LayoutInflater.from(contexte);
+        }
+        @Override
+        public int getCount() {
+            return listeHeures.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return listeHeures.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View vueConvertie, ViewGroup parent) {
+            ConstraintLayout style;
+            if (vueConvertie == null) {
+                style = (ConstraintLayout) gestionnairePagination.inflate(R.layout.style_liste, parent, false);
+            } else {
+                style = (ConstraintLayout) vueConvertie;
+            }
+
+            TextView heure = (TextView) style.findViewById(R.id.valeur_heure);
+            TextView moyenne = (TextView) style.findViewById(R.id.valeur_moyenne);
+            TextView maximum = (TextView) style.findViewById(R.id.valeur_maximum);
+            TextView minimum = (TextView) style.findViewById(R.id.valeur_minimum);
+
+            heure.setText(listeHeures.get(position).getHoraire());
+            moyenne.setText(listeHeures.get(position).getMoyenne());
+            maximum.setText(listeHeures.get(position).getMaximum());
+            minimum.setText(listeHeures.get(position).getMinimum());
+
+            return style;
+        }
     }
 }
