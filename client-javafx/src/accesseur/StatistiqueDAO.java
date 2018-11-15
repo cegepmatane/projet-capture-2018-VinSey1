@@ -135,12 +135,12 @@ public class StatistiqueDAO {
             Node node = document.getElementsByTagName("synthese").item(0);
             Element element = (Element) node;
             synthese.setMoyenneMois(element.getElementsByTagName("moyenne-mois").item(0).getTextContent());
-            synthese.setMaximumJour(element.getElementsByTagName("maximum-mois").item(0).getTextContent());
-            synthese.setMinimumJour(element.getElementsByTagName("minimum-mois").item(0).getTextContent());
-            synthese.setHeureValeurMax(element.getElementsByTagName("jour-valeur-max").item(0).getTextContent());
-            synthese.setHeureValeurMin(element.getElementsByTagName("jour-valeur-min").item(0).getTextContent());
-            synthese.setHeureMaxTests(element.getElementsByTagName("jour-max-test").item(0).getTextContent());
-            synthese.setHeureMinTests(element.getElementsByTagName("jour-min-test").item(0).getTextContent());
+            synthese.setMaximumMois(element.getElementsByTagName("maximum-mois").item(0).getTextContent());
+            synthese.setMinimumMois(element.getElementsByTagName("minimum-mois").item(0).getTextContent());
+            synthese.setJourValeurMax(element.getElementsByTagName("jour-valeur-max").item(0).getTextContent());
+            synthese.setJourValeurMin(element.getElementsByTagName("jour-valeur-min").item(0).getTextContent());
+            synthese.setJourMaxTest(element.getElementsByTagName("jour-max-test").item(0).getTextContent());
+            synthese.setJourMinTest(element.getElementsByTagName("jour-min-test").item(0).getTextContent());
 
             stat.setJours(jours);
             stat.setSynthese(synthese);
@@ -155,6 +155,63 @@ public class StatistiqueDAO {
         }
         return null;
     }
-    
+
+    public StatistiqueAnnee recevoirStatistiqueAnnee(int annee)
+    {
+
+        StatistiqueAnnee stat = new StatistiqueAnnee();
+        ArrayList<Mois> mois = new ArrayList<>();
+        Synthese synthese = new Synthese();
+        String url = "http://158.69.192.249/pollution/moyenne/annee/"+ annee;
+        try{
+        File fichierXml = new File(url);
+        DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = null;
+        docBuilder = docbuildFactory.newDocumentBuilder();
+        Document document = docBuilder.parse(fichierXml);
+        document.getDocumentElement().normalize();
+        stat.setAnnee(document.getElementsByTagName("annee").item(0).getTextContent());
+        stat.setNombreTests(document.getElementsByTagName("nombre-tests").item(0).getTextContent());
+
+            NodeList nodeList = document.getElementsByTagName("mois");
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    Mois moi = new Mois();
+                    moi.setDate(element.getElementsByTagName("date").item(0).getTextContent());
+                    moi.setMoyenne(element.getElementsByTagName("moyenne").item(0).getTextContent());
+                    moi.setMaximum(element.getElementsByTagName("maximum").item(0).getTextContent());
+                    moi.setMinimum(element.getElementsByTagName("minimum").item(0).getTextContent());
+
+                    mois.add(moi);
+                }
+            }
+
+            Node node = document.getElementsByTagName("synthese").item(0);
+            Element element = (Element) node;
+            synthese.setMoyenneAnnee(element.getElementsByTagName("moyenne-annee").item(0).getTextContent());
+            synthese.setMaximumAnnee(element.getElementsByTagName("maximum-annee").item(0).getTextContent());
+            synthese.setMinimumAnnee(element.getElementsByTagName("minimum-annee").item(0).getTextContent());
+            synthese.setMoisValeurMax(element.getElementsByTagName("mois-valeur-max").item(0).getTextContent());
+            synthese.setMoisValeurMin(element.getElementsByTagName("mois-valeur-min").item(0).getTextContent());
+            synthese.setMoisMaxTests(element.getElementsByTagName("mois-max-test").item(0).getTextContent());
+            synthese.setMoisMinTests(element.getElementsByTagName("mois-min-test").item(0).getTextContent());
+
+            stat.setMois(mois);
+            stat.setSynthese(synthese);
+
+    } catch (ParserConfigurationException e) {
+        e.printStackTrace();
+    } catch (SAXException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+        return null;
+    }
+
 
 }

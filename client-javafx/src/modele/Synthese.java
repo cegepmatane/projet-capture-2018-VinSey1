@@ -1,6 +1,8 @@
 package modele;
 
 public class Synthese {
+
+    //jour
     private String moyenneJour;
     private String maximumJour;
     private String minimumJour;
@@ -8,6 +10,8 @@ public class Synthese {
     private String heureValeurMin;
     private String heureMaxTests;
     private String heureMinTests;
+
+    //mois
     private String moyenneMois;
     private String maximumMois;
     private String minimumMois;
@@ -15,6 +19,16 @@ public class Synthese {
     private String jourValeurMin;
     private String jourMaxTest;
     private String jourMinTest;
+    //annee
+    private String moyenneAnnee;
+    private String maximumAnnee;
+    private String minimumAnnee;
+    private String moisValeurMax;
+    private String moisValeurMin;
+    private String moisMaxTests;
+    private String moisMinTests;
+
+
 
 
     public Synthese()
@@ -132,5 +146,61 @@ public class Synthese {
 
     public void setJourMinTest(String jourMinTest) {
         this.jourMinTest = jourMinTest;
+    }
+
+    public String getMoyenneAnnee() {
+        return moyenneAnnee;
+    }
+
+    public void setMoyenneAnnee(String moyenneAnnee) {
+        this.moyenneAnnee = moyenneAnnee;
+    }
+
+    public String getMaximumAnnee() {
+        return maximumAnnee;
+    }
+
+    public void setMaximumAnnee(String maximumAnnee) {
+        this.maximumAnnee = maximumAnnee;
+    }
+
+    public String getMoisValeurMax() {
+        return moisValeurMax;
+    }
+
+    public void setMoisValeurMax(String moisValeurMax) {
+        this.moisValeurMax = moisValeurMax;
+    }
+
+    public String getMoisValeurMin() {
+        return moisValeurMin;
+    }
+
+    public void setMoisValeurMin(String moisValeurMin) {
+        this.moisValeurMin = moisValeurMin;
+    }
+
+    public String getMoisMaxTests() {
+        return moisMaxTests;
+    }
+
+    public void setMoisMaxTests(String moisMaxTests) {
+        this.moisMaxTests = moisMaxTests;
+    }
+
+    public String getMoisMinTests() {
+        return moisMinTests;
+    }
+
+    public void setMoisMinTests(String moisMinTests) {
+        this.moisMinTests = moisMinTests;
+    }
+
+    public String getMinimumAnnee() {
+        return minimumAnnee;
+    }
+
+    public void setMinimumAnnee(String minimumAnnee) {
+        this.minimumAnnee = minimumAnnee;
     }
 }
