@@ -1,7 +1,6 @@
 package vue;
 
 import action.Controleur;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -96,12 +95,10 @@ public class VueJour extends Scene
                 String annee = strDate.split("-")[0];
                 String mois = strDate.split("-")[1];
                 String jour = strDate.split("-")[2];
-                controleur.notifierChangementDate(annee,mois,jour);
+                controleur.notifierChangementDateJour(annee,mois,jour);
                 //controleur.notifierChangementDate("2032","04","20");
             }
         });
-        //TODO SELECTION DATE
-
 
         jour.getChildren().addAll(textJour,selectionDate);
         HBox hboxNombreTest = new HBox();
@@ -109,7 +106,6 @@ public class VueJour extends Scene
         textNombreTestValeur = new Text();
         hboxNombreTest.getChildren().addAll(textNombreTestTitre,textNombreTestValeur);
 
-        //TODO Ajouter valeur
         /*****************************************************************/
         //LISTE VALEURS
         scrollPanelisteTest = new ScrollPane();
@@ -171,7 +167,7 @@ public class VueJour extends Scene
             @Override
             public void handle(ActionEvent event)
             {
-
+                controleur.notifierNaviguerVueMois();
             }
         });
         Button actionNaviguerStatistiquesAnnee = new Button();
@@ -200,10 +196,13 @@ public class VueJour extends Scene
 
         textNombreTestValeur.setText(statistiqueJour.getNombreDeTest());
         moyenneValeursValeur.setText(statistiqueJour.getSynthese().getMoyenneJour());
+
         valeurPlusEleveeValeur.setText(statistiqueJour.getSynthese().getMaximumJour());
         valeurPlusFaibleValeur.setText(statistiqueJour.getSynthese().getMinimumJour());
+
         heurePlusPollueeValeur.setText(statistiqueJour.getSynthese().getHeureValeurMax());
         heureMoinsPollueeValeur.setText(statistiqueJour.getSynthese().getHeureValeurMin());
+
         heurePlusDeTestValeur.setText(statistiqueJour.getSynthese().getHeureMaxTests());
         heureMoinsDeTestValeur.setText(statistiqueJour.getSynthese().getHeureMinTests());
 

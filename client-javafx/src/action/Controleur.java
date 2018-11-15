@@ -2,14 +2,17 @@ package action;
 
 import accesseur.StatistiqueDAO;
 import modele.StatistiqueJour;
+import modele.StatistiqueMois;
 import vue.NavigateurDesVues;
 import vue.VueJour;
+import vue.VueMois;
 
 public class Controleur
 {
     private StatistiqueDAO statistiqueDAO = null;
     //VUES
     private VueJour vueJour = null;
+    private VueMois vueMois = null;
     /*******************************************************/
     private NavigateurDesVues navigateur;
 
@@ -36,6 +39,8 @@ public class Controleur
     {
         this.navigateur = navigateur;
         this.vueJour = navigateur.getVueJour();
+        this.vueMois = navigateur.getVueMois();
+
         this.vueJour.afficherVueJour();
         this.navigateur.naviguerVersVueJour();
     }
@@ -45,19 +50,27 @@ public class Controleur
         this.navigateur.naviguerVersVueJour();
     }
 
-    /*public void notifierNaviguerVueMois()
+    public void notifierNaviguerVueMois()
     {
         this.navigateur.naviguerVersVueMois();
     }
+
+    /*
     public void notifierNaviguerVueAnnee()
     {
         this.navigateur.naviguerVersVueAnnee();
     }*/
 
-    public void notifierChangementDate(String annee, String mois, String jour)
+    public void notifierChangementDateJour(String annee, String mois, String jour)
     {
         StatistiqueJour statistiqueJour = this.statistiqueDAO.recevoirStatistiqueJour(annee,mois,jour);
         this.vueJour.listerTests(statistiqueJour);
+    }
+
+    public void notifierChangementDateMois(String annee, String mois)
+    {
+        StatistiqueMois statistiqueMois = this.statistiqueDAO.recevoirStatistiqueMois(annee,mois);
+        this.vueMois.listerTests(statistiqueMois);
     }
 
 }

@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import modele.Jour;
+import modele.StatistiqueMois;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -24,8 +26,18 @@ public class VueMois extends Scene {
     protected StackPane racine;
     protected VBox vboxPrincipal;
     protected ScrollPane scrollPanelisteTest;
-    protected Text textNombreTest;
+    protected VBox vboxListeJours;
+    protected Text textNombreTestTitre;
+    protected Text textNombreTestValeur;
     private LocalDate date = null;
+
+    protected Text moyenneValeursValeur;
+    protected Text valeurPlusEleveeValeur;
+    protected Text valeurPlusFaibleValeur;
+    protected Text jourPlusPollueValeur;
+    protected Text jourMoinsPollueValeur;
+    protected Text jourPlusDeTestValeur;
+    protected Text jourMoinsDeTestValeur;
 
     private Controleur controleur = null;
 
@@ -42,6 +54,7 @@ public class VueMois extends Scene {
 
         HBox hboxTitre = new HBox();
         VBox vboxTitre = new VBox();
+        vboxListeJours = new VBox();
 
         Text titreHaut = new Text("Statistiques de l'application");
         Text titreBas = new Text("Par mois");
@@ -72,20 +85,21 @@ public class VueMois extends Scene {
                 Date dateFormatee = Date.from(instant);
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
                 String strDate = dateFormat.format(dateFormatee);
-                System.out.print(strDate);
-
+                String annee = strDate.split("-")[0];
+                String mois = strDate.split("-")[1];
+                controleur.notifierChangementDateMois(annee,mois);
             }
         });
-        //TODO SELECTION DATE
-
 
         mois.getChildren().addAll(textMois,selectionDate);
-        textNombreTest = new Text("Nombre de test : ");
-        //TODO Ajouter valeur
+        HBox hboxNombreTest = new HBox();
+        textNombreTestTitre = new Text("Nombre de test : ");
+        textNombreTestValeur = new Text();
+        hboxNombreTest.getChildren().addAll(textNombreTestTitre,textNombreTestValeur);
+
         /*****************************************************************/
-        //LISTE VALEURS TODO AJOUTER VALEURS
         scrollPanelisteTest = new ScrollPane();
-        vboxGauche.getChildren().addAll(mois,actionAfficherListe,textNombreTest,scrollPanelisteTest);
+        vboxGauche.getChildren().addAll(mois,actionAfficherListe,hboxNombreTest,scrollPanelisteTest);
         /*****************************************************************/
         //Valeur du mois + Synthese des jour et Boutons - Partie Droite
 
@@ -95,19 +109,18 @@ public class VueMois extends Scene {
 
         HBox hboxValeurMoyenne = new HBox();
         Text moyenneValeursTitre = new Text("Moyenne des valeurs : ");
-        Text moyenneValeursValeur = new Text("");
+        moyenneValeursValeur = new Text("");
         hboxValeurMoyenne.getChildren().addAll(moyenneValeursTitre,moyenneValeursValeur);
 
         HBox hboxValeurPlusElevee = new HBox();
         Text valeurPlusEleveeTitre = new Text("Valeur la plus elevee : ");
-        Text valeurPlusEleveeValeur = new Text("");
+        valeurPlusEleveeValeur = new Text("");
         hboxValeurPlusElevee.getChildren().addAll(valeurPlusEleveeTitre,valeurPlusEleveeValeur);
 
         HBox hboxValeurPlusFaible = new HBox();
         Text valeurPlusFaibleTitre = new Text("Valeur la plus faible : ");
-        Text valeurPlusFaibleValeur = new Text("");
+        valeurPlusFaibleValeur = new Text("");
         hboxValeurPlusFaible.getChildren().addAll(valeurPlusFaibleTitre,valeurPlusFaibleValeur);
-        //TODO Ajouter les valeurs
         vboxValeursDuMois.getChildren().addAll(hboxValeurMoyenne,hboxValeurPlusElevee,hboxValeurPlusFaible);
 
 
@@ -116,25 +129,24 @@ public class VueMois extends Scene {
 
         HBox hboxJourPlusPollue = new HBox();
         Text jourPlusPollueTitre = new Text("Jour le plus pollue : ");
-        Text jourPlusPollueValeur = new Text("10" + "h");
+        jourPlusPollueValeur = new Text("");
         hboxJourPlusPollue.getChildren().addAll(jourPlusPollueTitre,jourPlusPollueValeur);
 
         HBox hboxJourMoinsPollue = new HBox();
         Text jourMoinsPollueTitre = new Text("Jour la moins polluee : ");
-        Text jourMoinsPollueValeur = new Text("8" + "h");
+        jourMoinsPollueValeur = new Text("");
         hboxJourMoinsPollue.getChildren().addAll(jourMoinsPollueTitre,jourMoinsPollueValeur);
 
         HBox hboxJourPlusDeTest = new HBox();
         Text jourPlusDeTestTitre = new Text("Jour avec le plus de test : ");
-        Text jourPlusDeTestValeur = new Text("15" + "h");
+        jourPlusDeTestValeur = new Text("");
         hboxJourPlusDeTest.getChildren().addAll(jourPlusDeTestTitre,jourPlusDeTestValeur);
 
         HBox hboxJourMoinsDeTest = new HBox();
         Text jourMoinsDeTestTitre = new Text("Jour avec le moins de tests : ");
-        Text jourMoinsDeTestValeur = new Text("16" + "h");
+        jourMoinsDeTestValeur = new Text("");
         hboxJourMoinsDeTest.getChildren().addAll(jourMoinsDeTestTitre,jourMoinsDeTestValeur);
 
-        //TODO Ajouter les valeurs
         vboxSyntheseJours.getChildren().addAll(hboxJourPlusPollue,hboxJourMoinsPollue,hboxJourPlusDeTest,hboxJourMoinsDeTest);
 
         VBox vboxBoutons = new VBox();
@@ -167,5 +179,65 @@ public class VueMois extends Scene {
 
     }
 
-    public void setControleur(Controleur controleur) { this.controleur = controleur; }
+    public void listerTests(StatistiqueMois statistiqueMois)
+    {
+        vboxListeJours.getChildren().clear();
+
+        textNombreTestValeur.setText(statistiqueMois.getNombreTests());
+        moyenneValeursValeur.setText(statistiqueMois.getSynthese().getMoyenneMois());
+
+        valeurPlusEleveeValeur.setText(statistiqueMois.getSynthese().getMaximumMois());
+        valeurPlusFaibleValeur.setText(statistiqueMois.getSynthese().getMinimumMois());
+
+        jourPlusPollueValeur.setText(statistiqueMois.getSynthese().getJourValeurMax());
+        jourMoinsPollueValeur.setText(statistiqueMois.getSynthese().getJourValeurMin());
+
+        jourPlusDeTestValeur.setText(statistiqueMois.getSynthese().getJourMaxTest());
+        jourMoinsDeTestValeur.setText(statistiqueMois.getSynthese().getJourMinTest());
+
+        for (Jour jour:statistiqueMois.getJours())
+        {
+            HBox hboxPrincipalJour = new HBox();
+
+            VBox vboxJour = new VBox();
+            Text textJour = new Text("Jour");
+            Text textValeurJour = new Text(jour.getDate());
+            vboxJour.getChildren().addAll(textJour, textValeurJour);
+
+            VBox vBoxValeursJour = new VBox();
+            Text textTitreValeurs = new Text("Valeurs (en g/m3)");
+
+            HBox hboxPrincipalValeurs = new HBox();
+
+            VBox vboxMoyenneJour = new VBox();
+            Text textMoyenneTitre = new Text("Moyenne");
+            Text textMoyenneValeur = new Text(jour.getMoyenne());
+            vboxMoyenneJour.getChildren().addAll(textMoyenneTitre, textMoyenneValeur);
+
+            VBox vboxMaximumJour = new VBox();
+            Text textMaximumTitre = new Text("Maximum");
+            Text textMaximumValeur = new Text(jour.getMaximum());
+            vboxMaximumJour.getChildren().addAll(textMaximumTitre, textMaximumValeur);
+
+            VBox vboxMinimumJour = new VBox();
+            Text textMinimumTitre = new Text("Minimum");
+            Text textMinimumValeur = new Text(jour.getMinimum());
+            vboxMinimumJour.getChildren().addAll(textMinimumTitre, textMinimumValeur);
+
+            hboxPrincipalValeurs.getChildren().addAll(vboxMoyenneJour, vboxMaximumJour, vboxMinimumJour);
+
+            vBoxValeursJour.getChildren().addAll(textTitreValeurs, hboxPrincipalValeurs);
+
+            hboxPrincipalJour.getChildren().addAll(vboxJour, vBoxValeursJour);
+            vboxListeJours.getChildren().add(hboxPrincipalJour);
+            scrollPanelisteTest.setContent(vboxListeJours);
+            scrollPanelisteTest.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        }
+
+    }
+
+    public void setControleur(Controleur controleur)
+    {
+        this.controleur = controleur;
+    }
 }

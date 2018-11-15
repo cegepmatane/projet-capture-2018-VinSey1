@@ -98,30 +98,34 @@ public class StatistiqueDAO {
 
     }
 
-    public StatistiqueMois recevoirStatistiqueMois(int annee, int mois)
+    public StatistiqueMois recevoirStatistiqueMois(String annee, String mois)
     {
         StatistiqueMois stat = new StatistiqueMois();
         ArrayList<Jour> jours = new ArrayList<>();
         Synthese synthese = new Synthese();
-        String url = "http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois;
-        try {
+        //URL url = new URL("http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois);
 
-        File fichierXml = new File(url);
-        DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = null;
-        docBuilder = docbuildFactory.newDocumentBuilder();
-        Document document = docBuilder.parse(fichierXml);
-        document.getDocumentElement().normalize();
-        stat.setMois(document.getElementsByTagName("mois").item(0).getTextContent());
-        stat.setNombreTests(document.getElementsByTagName("nombre-tests").item(0).getTextContent());
+        try
+        {
+            URL url = new URL("http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois);
+
+            DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = null;
+            docBuilder = docbuildFactory.newDocumentBuilder();
+            Document document = docBuilder.parse(url.openStream());
+            document.getDocumentElement().normalize();
+            stat.setMois(document.getElementsByTagName("mois").item(0).getTextContent());
+            stat.setNombreTests(document.getElementsByTagName("nombre-tests").item(0).getTextContent());
 
 
             NodeList nodeList = document.getElementsByTagName("jour");
 
-            for (int i = 0; i < nodeList.getLength(); i++) {
+            for (int i = 0; i < nodeList.getLength(); i++)
+            {
                 Node node = nodeList.item(i);
 
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                if (node.getNodeType() == Node.ELEMENT_NODE)
+                {
                     Element element = (Element) node;
                     Jour jour = new Jour();
                     jour.setDate(element.getElementsByTagName("date").item(0).getTextContent());
@@ -132,19 +136,19 @@ public class StatistiqueDAO {
                     jours.add(jour);
                 }
             }
-            Node node = document.getElementsByTagName("synthese").item(0);
-            Element element = (Element) node;
-            synthese.setMoyenneMois(element.getElementsByTagName("moyenne-mois").item(0).getTextContent());
-            synthese.setMaximumMois(element.getElementsByTagName("maximum-mois").item(0).getTextContent());
-            synthese.setMinimumMois(element.getElementsByTagName("minimum-mois").item(0).getTextContent());
-            synthese.setJourValeurMax(element.getElementsByTagName("jour-valeur-max").item(0).getTextContent());
-            synthese.setJourValeurMin(element.getElementsByTagName("jour-valeur-min").item(0).getTextContent());
-            synthese.setJourMaxTest(element.getElementsByTagName("jour-max-test").item(0).getTextContent());
-            synthese.setJourMinTest(element.getElementsByTagName("jour-min-test").item(0).getTextContent());
+                Node node = document.getElementsByTagName("synthese").item(0);
+                Element element = (Element) node;
+                synthese.setMoyenneMois(element.getElementsByTagName("moyenne-mois").item(0).getTextContent());
+                synthese.setMaximumMois(element.getElementsByTagName("maximum-mois").item(0).getTextContent());
+                synthese.setMinimumMois(element.getElementsByTagName("minimum-mois").item(0).getTextContent());
+                synthese.setJourValeurMax(element.getElementsByTagName("jour-valeur-max").item(0).getTextContent());
+                synthese.setJourValeurMin(element.getElementsByTagName("jour-valeur-min").item(0).getTextContent());
+                synthese.setJourMaxTest(element.getElementsByTagName("jour-max-test").item(0).getTextContent());
+                synthese.setJourMinTest(element.getElementsByTagName("jour-min-test").item(0).getTextContent());
 
-            stat.setJours(jours);
-            stat.setSynthese(synthese);
-            return stat;
+                stat.setJours(jours);
+                stat.setSynthese(synthese);
+                return stat;
 
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -156,22 +160,23 @@ public class StatistiqueDAO {
         return null;
     }
 
-    public StatistiqueAnnee recevoirStatistiqueAnnee(int annee)
+    public StatistiqueAnnee recevoirStatistiqueAnnee(String annee)
     {
 
         StatistiqueAnnee stat = new StatistiqueAnnee();
         ArrayList<Mois> mois = new ArrayList<>();
         Synthese synthese = new Synthese();
-        String url = "http://158.69.192.249/pollution/moyenne/annee/"+ annee;
-        try{
-        File fichierXml = new File(url);
-        DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = null;
-        docBuilder = docbuildFactory.newDocumentBuilder();
-        Document document = docBuilder.parse(fichierXml);
-        document.getDocumentElement().normalize();
-        stat.setAnnee(document.getElementsByTagName("annee").item(0).getTextContent());
-        stat.setNombreTests(document.getElementsByTagName("nombre-tests").item(0).getTextContent());
+
+        try
+        {
+            URL url = new URL("http://158.69.192.249/pollution/moyenne/annee/"+ annee);
+            DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = null;
+            docBuilder = docbuildFactory.newDocumentBuilder();
+            Document document = docBuilder.parse(url.openStream());
+            document.getDocumentElement().normalize();
+            stat.setAnnee(document.getElementsByTagName("annee").item(0).getTextContent());
+            stat.setNombreTests(document.getElementsByTagName("nombre-tests").item(0).getTextContent());
 
             NodeList nodeList = document.getElementsByTagName("mois");
 
