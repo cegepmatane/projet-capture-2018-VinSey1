@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class StatistiqueDAO {
@@ -38,16 +39,14 @@ public class StatistiqueDAO {
         StatistiqueJour stat = new StatistiqueJour();
         ArrayList<Heure> heures = new ArrayList<>();
         Synthese synthese = new Synthese();
-        String url = "http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois +"/jour/" + jour;
-        System.out.println(url);
         try {
-            File fichierXml = new File(url);
+            URL url = new URL("http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois +"/jour/" + jour);
             DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = null;
 
             docBuilder = docbuildFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(fichierXml);
+            Document document = docBuilder.parse(url.openStream());
 
             document.getDocumentElement().normalize();
 
