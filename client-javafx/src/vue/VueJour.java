@@ -1,5 +1,6 @@
 package vue;
 
+import action.Controleur;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,20 +14,25 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class VueJour extends Application
+public class VueJour extends Scene
 {
-    private StackPane racine;
-    private VBox vboxPrincipal;
-    private Scene scenePrincipale;
-    private ScrollPane scrollPanelisteTest;
-    private Text textNombreTest;
+    protected StackPane racine;
+    protected VBox vboxPrincipal;
+    protected ScrollPane scrollPanelisteTest;
+    protected Text textNombreTest;
+
+    private Controleur controleur = null;
 
 
-    public void start(Stage stagePrincipal)
+    public VueJour()
     {
-        racine = new StackPane();
+        super(new StackPane(),800,800);
+        racine = (StackPane) this.getRoot();
+    }
+
+    public void afficherVueJour()
+    {
         vboxPrincipal = new VBox();
-        scenePrincipale = new Scene(racine,800,800);
         /*****************************************************************/
         //TITRE - Partie du Haut
 
@@ -136,13 +142,17 @@ public class VueJour extends Application
         vboxPrincipal.getChildren().add(centre);
         racine.getChildren().add(vboxPrincipal);
         /*****************************************************************/
-        stagePrincipal.setScene(scenePrincipale);
-        stagePrincipal.show();
+
     }
 
     /*public void listerTests()
     {
 
     }*/
+
+    public void setControleur(Controleur controleur)
+    {
+        this.controleur = controleur;
+    }
 
 }
