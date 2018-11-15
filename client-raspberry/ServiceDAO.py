@@ -23,6 +23,12 @@ class ServiceDAO:
 
         return reponse
 
-    def fermerConnection(self):
+    def detruire(self):
         self.connection.close()
         print("Connection avec le serveur NodeJS fermee")
+
+    if __name__ == '__main__':
+        try:
+            __init__(self, adresseServeur, authentification)
+        except KeyboardInterrupt: 
+            detruire()

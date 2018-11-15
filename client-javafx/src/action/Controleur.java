@@ -1,6 +1,7 @@
 package action;
 
 import accesseur.StatistiqueDAO;
+import modele.StatistiqueJour;
 import vue.NavigateurDesVues;
 import vue.VueJour;
 
@@ -52,5 +53,11 @@ public class Controleur
     {
         this.navigateur.naviguerVersVueAnnee();
     }*/
+
+    public void notifierChangementDate(String annee, String mois, String jour)
+    {
+        StatistiqueJour statistiqueJour = this.statistiqueDAO.recevoirStatistiqueJour(annee,mois,jour);
+        this.vueJour.listerTests(statistiqueJour);
+    }
 
 }

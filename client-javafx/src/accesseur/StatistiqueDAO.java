@@ -33,12 +33,13 @@ public class StatistiqueDAO {
     }
 
 
-    public StatistiqueJour recevoirStatistiqueJour(int annee, int mois, int jour)
+    public StatistiqueJour recevoirStatistiqueJour(String annee, String mois, String jour)
     {
         StatistiqueJour stat = new StatistiqueJour();
         ArrayList<Heure> heures = new ArrayList<>();
         Synthese synthese = new Synthese();
         String url = "http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois +"/jour/" + jour;
+        System.out.println(url);
         try {
             File fichierXml = new File(url);
             DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();

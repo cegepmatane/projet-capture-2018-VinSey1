@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import modele.Heure;
+import modele.StatistiqueJour;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,6 +28,7 @@ public class VueJour extends Scene
     protected VBox vboxPrincipal;
     protected ScrollPane scrollPanelisteTest;
     protected Text textNombreTest;
+    protected VBox vboxListeHeures;
     private LocalDate date = null;
 
     private Controleur controleur = null;
@@ -45,6 +48,7 @@ public class VueJour extends Scene
 
         HBox hboxTitre = new HBox();
         VBox vboxTitre = new VBox();
+        vboxListeHeures = new VBox();
 
         Text titreHaut = new Text("Statistiques de l'application");
         Text titreBas = new Text("Par jour");
@@ -75,7 +79,11 @@ public class VueJour extends Scene
                 Date dateFormatee = Date.from(instant);
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String strDate = dateFormat.format(dateFormatee);
-                listerTests(strDate);
+                String annee = strDate.split("-")[0];
+                String mois = strDate.split("-")[1];
+                String jour = strDate.split("-")[2];
+                //controleur.notifierChangementDate(annee,mois,jour);
+                controleur.notifierChangementDate("2032","04","20");
             }
         });
         //TODO SELECTION DATE
@@ -169,9 +177,49 @@ public class VueJour extends Scene
 
     }
 
-    public void listerTests(String date)
+    public void listerTests(StatistiqueJour statistiqueJour)
     {
-        System.out.println(date);
+        for (Heure heure:statistiqueJour.getHeures())
+        {
+            HBox hboxPrincipalHeure = new HBox();
+
+            VBox vboxHeure = new VBox();
+            Text textHeure = new Text("Heure");
+            Text textValeurHeure = new Text(heure.getHoraire());
+            vboxHeure.getChildren().addAll(textHeure,textValeurHeure);
+
+            VBox vBoxValeursHeure = new VBox();
+            Text textTitreValeurs = new Text("Valeurs (en g/m3)");
+
+            HBox hboxPrincipalValeurs = new HBox();
+
+            VBox vboxMoyenneHeure = new VBox();
+            Text textMoyenneTitre = new Text("Moyenne");
+            Text textMoyenneValeur = new Text(heure.getMoyenne());
+            vboxMoyenneHeure.getChildren().addAll(textMoyenneTitre,textMoyenneValeur);
+
+            VBox vboxMaximumHeure = new VBox();
+            Text textMaximumTitre = new Text("Maximum");
+            Text textMaximumValeur = new Text(heure.getMaximum());
+            vboxMaximumHeure.getChildren().addAll(textMaximumTitre,textMaximumValeur);
+
+            VBox vboxMinimumHeure = new VBox();
+            Text textMinimumTitre = new Text("Minimum");
+            Text textMinimumValeur = new Text(heure.getMinimum());
+            vboxMinimumHeure.getChildren().addAll(textMinimumTitre,textMinimumValeur);
+
+            hboxPrincipalValeurs.getChildren().addAll(vboxMoyenneHeure,vboxMaximumHeure,vboxMinimumHeure);
+
+            vBoxValeursHeure.getChildren().addAll(textTitreValeurs,hboxPrincipalValeurs);
+
+            hboxPrincipalHeure.getChildren().addAll(vboxHeure,vBoxValeursHeure);
+            vboxListeHeures.getChildren().add(hboxPrincipalHeure);
+            scrollPanelisteTest.setContent(vboxListeHeures);
+
+            System.out.println(heure.getHoraire());
+
+        }
+
     }
 
     public void setControleur(Controleur controleur)
