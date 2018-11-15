@@ -27,8 +27,21 @@ public class VueJour extends Scene
     protected StackPane racine;
     protected VBox vboxPrincipal;
     protected ScrollPane scrollPanelisteTest;
-    protected Text textNombreTest;
     protected VBox vboxListeHeures;
+    protected Text textNombreTestValeur;
+
+    protected Text moyenneValeursValeur;
+    protected Text valeurPlusEleveeValeur;
+    protected Text valeurPlusFaibleValeur;
+    protected Text heurePlusPollueeValeur;
+    protected Text heureMoinsPollueeValeur;
+    protected Text heurePlusDeTestValeur;
+    protected Text heureMoinsDeTestValeur;
+
+
+
+
+
     private LocalDate date = null;
 
     private Controleur controleur = null;
@@ -66,6 +79,7 @@ public class VueJour extends Scene
         Text textJour = new Text("Jour : ");
 
 
+
         DatePicker selectionDate = new DatePicker();
         Button actionAfficherListe = new Button();
         actionAfficherListe.setText("Selectionner date");
@@ -82,20 +96,24 @@ public class VueJour extends Scene
                 String annee = strDate.split("-")[0];
                 String mois = strDate.split("-")[1];
                 String jour = strDate.split("-")[2];
-                //controleur.notifierChangementDate(annee,mois,jour);
-                controleur.notifierChangementDate("2032","04","20");
+                controleur.notifierChangementDate(annee,mois,jour);
+                //controleur.notifierChangementDate("2032","04","20");
             }
         });
         //TODO SELECTION DATE
 
 
         jour.getChildren().addAll(textJour,selectionDate);
-        textNombreTest = new Text("Nombre de test : ");
+        HBox hboxNombreTest = new HBox();
+        Text textNombreTestTitre = new Text("Nombre de test : ");
+        textNombreTestValeur = new Text();
+        hboxNombreTest.getChildren().addAll(textNombreTestTitre,textNombreTestValeur);
+
         //TODO Ajouter valeur
         /*****************************************************************/
-        //LISTE VALEURS TODO AJOUTER VALEURS
+        //LISTE VALEURS
         scrollPanelisteTest = new ScrollPane();
-        vboxGauche.getChildren().addAll(jour,actionAfficherListe,textNombreTest,scrollPanelisteTest);
+        vboxGauche.getChildren().addAll(jour,actionAfficherListe,hboxNombreTest,scrollPanelisteTest);
         /*****************************************************************/
         //Valeur du jour + Synthese des heures et Boutons - Partie Droite
 
@@ -105,19 +123,19 @@ public class VueJour extends Scene
 
         HBox hboxValeurMoyenne = new HBox();
         Text moyenneValeursTitre = new Text("Moyenne des valeurs : ");
-        Text moyenneValeursValeur = new Text("");
+        moyenneValeursValeur = new Text("");
         hboxValeurMoyenne.getChildren().addAll(moyenneValeursTitre,moyenneValeursValeur);
 
         HBox hboxValeurPlusElevee = new HBox();
         Text valeurPlusEleveeTitre = new Text("Valeur la plus elevee : ");
-        Text valeurPlusEleveeValeur = new Text("");
+        valeurPlusEleveeValeur = new Text("");
         hboxValeurPlusElevee.getChildren().addAll(valeurPlusEleveeTitre,valeurPlusEleveeValeur);
 
         HBox hboxValeurPlusFaible = new HBox();
         Text valeurPlusFaibleTitre = new Text("Valeur la plus faible : ");
-        Text valeurPlusFaibleValeur = new Text("");
+        valeurPlusFaibleValeur = new Text("");
         hboxValeurPlusFaible.getChildren().addAll(valeurPlusFaibleTitre,valeurPlusFaibleValeur);
-        //TODO Ajouter les valeurs
+
         vboxValeursDujour.getChildren().addAll(hboxValeurMoyenne,hboxValeurPlusElevee,hboxValeurPlusFaible);
 
 
@@ -126,25 +144,24 @@ public class VueJour extends Scene
 
         HBox hboxHeurePlusPolluee = new HBox();
         Text heurePlusPollueeTitre = new Text("Heure la plus polluee : ");
-        Text heurePlusPollueeValeur = new Text("10" + "h");
+        heurePlusPollueeValeur = new Text("");
         hboxHeurePlusPolluee.getChildren().addAll(heurePlusPollueeTitre,heurePlusPollueeValeur);
 
         HBox hboxHeureMoinsPolluee = new HBox();
         Text heureMoinsPollueeTitre = new Text("Heure la moins polluee : ");
-        Text heureMoinsPollueeValeur = new Text("8" + "h");
+        heureMoinsPollueeValeur = new Text("");
         hboxHeureMoinsPolluee.getChildren().addAll(heureMoinsPollueeTitre,heureMoinsPollueeValeur);
 
         HBox hboxHeurePlusDeTest = new HBox();
         Text heurePlusDeTestTitre = new Text("Heure avec le plus de test : ");
-        Text heurePlusDeTestValeur = new Text("15" + "h");
+        heurePlusDeTestValeur = new Text("");
         hboxHeurePlusDeTest.getChildren().addAll(heurePlusDeTestTitre,heurePlusDeTestValeur);
 
         HBox hboxHeureMoinsDeTest = new HBox();
         Text heureMoinsDeTestTitre = new Text("Heure avec le moins de tests : ");
-        Text heureMoinsDeTestValeur = new Text("16" + "h");
+        heureMoinsDeTestValeur = new Text("");
         hboxHeureMoinsDeTest.getChildren().addAll(heureMoinsDeTestTitre,heureMoinsDeTestValeur);
 
-        //TODO Ajouter les valeurs
         vboxSyntheseHeures.getChildren().addAll(hboxHeurePlusPolluee,hboxHeureMoinsPolluee,hboxHeurePlusDeTest,hboxHeureMoinsDeTest);
 
         VBox vboxBoutons = new VBox();
@@ -179,6 +196,17 @@ public class VueJour extends Scene
 
     public void listerTests(StatistiqueJour statistiqueJour)
     {
+        vboxListeHeures.getChildren().clear();
+
+        textNombreTestValeur.setText(statistiqueJour.getNombreDeTest());
+        moyenneValeursValeur.setText(statistiqueJour.getSynthese().getMoyenneJour());
+        valeurPlusEleveeValeur.setText(statistiqueJour.getSynthese().getMaximumJour());
+        valeurPlusFaibleValeur.setText(statistiqueJour.getSynthese().getMinimumJour());
+        heurePlusPollueeValeur.setText(statistiqueJour.getSynthese().getHeureValeurMax());
+        heureMoinsPollueeValeur.setText(statistiqueJour.getSynthese().getHeureValeurMin());
+        heurePlusDeTestValeur.setText(statistiqueJour.getSynthese().getHeureMaxTests());
+        heureMoinsDeTestValeur.setText(statistiqueJour.getSynthese().getHeureMinTests());
+
         for (Heure heure:statistiqueJour.getHeures())
         {
             HBox hboxPrincipalHeure = new HBox();
@@ -215,6 +243,7 @@ public class VueJour extends Scene
             hboxPrincipalHeure.getChildren().addAll(vboxHeure,vBoxValeursHeure);
             vboxListeHeures.getChildren().add(hboxPrincipalHeure);
             scrollPanelisteTest.setContent(vboxListeHeures);
+            scrollPanelisteTest.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
             System.out.println(heure.getHoraire());
 
