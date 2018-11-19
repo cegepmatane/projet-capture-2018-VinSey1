@@ -17,12 +17,6 @@
 	
     $heureMinTests = $statDao->recevoirHeureMinTests($mois, $annee, $jour);
 
-	if(!empty($listeCapteursHeure))
-	{
-		$maxTestHeure = $listeCapteursHeure[0]->nombreCapteursHeure;
-		$minTestHeure = $listeCapteursHeure[0]->nombreCapteursHeure;
-	}
-
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
 
@@ -36,18 +30,7 @@
 		<statistiques>
 			<nombre-tests><?=$listeCapteursJour->nombreCapteursJour?></nombre-tests>
 			<details>
-				<?php foreach($listeCapteursHeure as $heure){ 
-
-					if(($heure->nombreCapteursHeure)>$maxTestHeure)
-					{
-						$maxTestHeure = $heure->nombreCapteursHeure;					
-					}
-					if(($heure->nombreCapteursHeure)<$minTestHeure)
-					{
-						$minTestHeure = $heure->nombreCapteursHeure;					
-					}			
-				
-					?>
+				<?php foreach($listeCapteursHeure as $heure){ ?>
 					<heure>
 						<horaire><?=$heure->heure?></horaire>
 						<moyenne><?=$heure->moyenneHeure?></moyenne>

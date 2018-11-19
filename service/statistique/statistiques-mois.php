@@ -16,12 +16,6 @@
 
 	$jourMinTests = $statDao->recevoirJourMinTests($mois, $annee);
 	
-	if(!empty($listeCapteursJour))
-	{
-		$maxTestJour = $listeCapteursJour[0]->nombreCapteursJour;
-		$minTestJour = $listeCapteursJour[0]->nombreCapteursJour;
-	}
-	
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
 
@@ -35,18 +29,7 @@
 		<statistiques>
 			<nombre-tests><?=$listeCapteursMois->nombreCapteursMois?></nombre-tests>
 			<details>
-				<?php foreach($listeCapteursJour as $jour){
-
-					if(($jour->nombreCapteursJour)>$maxTestJour)
-					{
-						$maxTestJour = $jour->nombreCapteursJour;
-					}
-					if(($jour->nombreCapteursJour)<$minTestJour)
-					{
-						$minTestJour = $jour->nombreCapteursJour;
-					}
-
-					?>
+				<?php foreach($listeCapteursJour as $jour){ ?>
 					<jour>
 						<date><?=$jour->jour?></date>
 						<moyenne><?=$jour->moyenneJour?></moyenne>
