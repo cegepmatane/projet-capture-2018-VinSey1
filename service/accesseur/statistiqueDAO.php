@@ -168,6 +168,7 @@ class StatistiqueDAO
         $requeteHeureMaxTests = $basededonnees->prepare($SQL_HEURE_MAX_TESTS);
         $requeteHeureMaxTests->execute();
         $heureMaxTests = $requeteHeureMaxTests->fetch(PDO::FETCH_OBJ);
+		return $heureMaxTests;
     }
 
     function recevoirHeureMinTests($mois, $annee, $jour)
