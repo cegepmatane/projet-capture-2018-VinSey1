@@ -181,7 +181,7 @@ class StatistiqueDAO
         return $heureMinTests;
     }
 	
-	function verifierDernierTest() {
+	function verifierDernierTest($mois, $annee, $jour) {
 		
 		global $basededonnees;
 		$SQL_DERNIER_TEST = "SELECT HOUR(date) as heure FROM capteur WHERE YEAR(date) =" . $annee . " AND MONTH(date) = " . $mois . " AND DAY(date) = " . $jour . " ORDER BY HOUR(date) ASC LIMIT 1";
