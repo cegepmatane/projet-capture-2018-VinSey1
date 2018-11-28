@@ -6,7 +6,7 @@
 	$annee = $_GET['annee'];
 	$statDao = new StatistiqueDAO;
 
-	$heureDernierTest = $statDao->verifierDernierTest($annee, $mois, $jour);
+	$heureDernierTest = $statDao->verifierDernierTest($mois, $annee, $jour);
 
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -20,9 +20,9 @@
 	<actif>
 	
 	</actif>
-	<date-dernier-test>
-	<?=($heureDernierTest !=null) ? $heureDernierTest:"";?>
-	</date-dernier-test>
+	<heure-dernier-test>
+	<?=$heureDernierTest->heure?>
+	</heure-dernier-test>
 	
 
 </surveillance>
