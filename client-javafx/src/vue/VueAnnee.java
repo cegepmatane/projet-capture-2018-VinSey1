@@ -78,14 +78,22 @@ public class VueAnnee extends Scene {
             @Override
             public void handle(ActionEvent event)
             {
-                //ACTION AFFICHER LISTE AVEC DATE
-                date = selectionDate.getValue();
-                Instant instant = Instant.from(date.atStartOfDay(ZoneId.systemDefault()));
-                Date dateFormatee = Date.from(instant);
-                DateFormat dateFormat = new SimpleDateFormat("yyyy");
-                String strDate = dateFormat.format(dateFormatee);
-                System.out.println(strDate);
-                controleur.notifierChangementDateAnnee(strDate);
+                if(selectionDate.getValue() != null)
+                {
+                    //ACTION AFFICHER LISTE AVEC DATE
+                    date = selectionDate.getValue();
+                    Instant instant = Instant.from(date.atStartOfDay(ZoneId.systemDefault()));
+                    Date dateFormatee = Date.from(instant);
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy");
+                    String strDate = dateFormat.format(dateFormatee);
+                    System.out.println(strDate);
+                    controleur.notifierChangementDateAnnee(strDate);
+                }
+                else
+                {
+                    System.out.println("Veuillez selectionner une date !");
+                }
+
             }
         });
 

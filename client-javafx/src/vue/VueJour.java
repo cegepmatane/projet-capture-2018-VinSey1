@@ -82,17 +82,23 @@ public class VueJour extends Scene
             @Override
             public void handle(ActionEvent event)
             {
-                //ACTION AFFICHER LISTE AVEC DATE
-                date = selectionDate.getValue();
-                Instant instant = Instant.from(date.atStartOfDay(ZoneId.systemDefault()));
-                Date dateFormatee = Date.from(instant);
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String strDate = dateFormat.format(dateFormatee);
-                String annee = strDate.split("-")[0];
-                String mois = strDate.split("-")[1];
-                String jour = strDate.split("-")[2];
-                controleur.notifierChangementDateJour(annee,mois,jour);
-                //controleur.notifierChangementDate("2032","04","20");
+                if(selectionDate.getValue() != null) {
+                    //ACTION AFFICHER LISTE AVEC DATE
+                    date = selectionDate.getValue();
+                    Instant instant = Instant.from(date.atStartOfDay(ZoneId.systemDefault()));
+                    Date dateFormatee = Date.from(instant);
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    String strDate = dateFormat.format(dateFormatee);
+                    String annee = strDate.split("-")[0];
+                    String mois = strDate.split("-")[1];
+                    String jour = strDate.split("-")[2];
+                    controleur.notifierChangementDateJour(annee, mois, jour);
+                    //controleur.notifierChangementDate("2032","04","20");
+                }
+                else
+                {
+                    System.out.println("Veuillez selectionner une date !");
+                }
             }
         });
 

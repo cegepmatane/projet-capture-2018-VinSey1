@@ -79,15 +79,22 @@ public class VueMois extends Scene {
             @Override
             public void handle(ActionEvent event)
             {
-                //ACTION AFFICHER LISTE AVEC DATE
-                date = selectionDate.getValue();
-                Instant instant = Instant.from(date.atStartOfDay(ZoneId.systemDefault()));
-                Date dateFormatee = Date.from(instant);
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
-                String strDate = dateFormat.format(dateFormatee);
-                String annee = strDate.split("-")[0];
-                String mois = strDate.split("-")[1];
-                controleur.notifierChangementDateMois(annee,mois);
+                if(selectionDate.getValue() != null)
+                {
+                    //ACTION AFFICHER LISTE AVEC DATE
+                    date = selectionDate.getValue();
+                    Instant instant = Instant.from(date.atStartOfDay(ZoneId.systemDefault()));
+                    Date dateFormatee = Date.from(instant);
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+                    String strDate = dateFormat.format(dateFormatee);
+                    String annee = strDate.split("-")[0];
+                    String mois = strDate.split("-")[1];
+                    controleur.notifierChangementDateMois(annee, mois);
+                }
+                else
+                {
+                    System.out.println("Veuillez selectionner une date !");
+                }
             }
         });
 
