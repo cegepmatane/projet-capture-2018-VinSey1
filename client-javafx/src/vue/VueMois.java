@@ -3,6 +3,8 @@ package vue;
 import action.Controleur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -43,7 +45,7 @@ public class VueMois extends Scene {
     private Controleur controleur = null;
 
     public VueMois() {
-        super(new StackPane(),600,600);
+        super(new StackPane(),700,350);
         racine = (StackPane) this.getRoot();
     }
 
@@ -60,7 +62,10 @@ public class VueMois extends Scene {
         Text titreHaut = new Text("Statistiques de l'application");
         Text titreBas = new Text("Par mois");
         vboxTitre.getChildren().addAll(titreHaut,titreBas);
+        vboxTitre.setAlignment(Pos.CENTER);
         hboxTitre.getChildren().add(vboxTitre);
+        hboxTitre.setAlignment(Pos.CENTER);
+        hboxTitre.setPadding(new Insets(0, 0, 30, 0));
         vboxPrincipal.getChildren().add(hboxTitre);
 
         HBox centre = new HBox();
@@ -103,19 +108,23 @@ public class VueMois extends Scene {
             }
         });
 
-        mois.getChildren().addAll(textMois,selectionDate);
+        mois.getChildren().addAll(textMois,selectionDate,actionAfficherListe);
+        mois.setSpacing(10);
         HBox hboxNombreTest = new HBox();
         textNombreTestTitre = new Text("Nombre de test : ");
         textNombreTestValeur = new Text();
         hboxNombreTest.getChildren().addAll(textNombreTestTitre,textNombreTestValeur);
+        hboxNombreTest.setPadding(new Insets(30, 0, 0, 0));
 
         /*****************************************************************/
         scrollPanelisteTest = new ScrollPane();
-        vboxGauche.getChildren().addAll(mois,actionAfficherListe,hboxNombreTest,scrollPanelisteTest);
+        vboxGauche.setPadding(new Insets(0, 20, 0, 0));
+        vboxGauche.getChildren().addAll(mois,hboxNombreTest,scrollPanelisteTest);
         /*****************************************************************/
         //Valeur du mois + Synthese des jour et Boutons - Partie Droite
 
         VBox vboxDroite = new VBox();
+        vboxDroite.setPadding(new Insets(10,10,10,10));
         Text valeurMoisTitre = new Text("Valeurs du mois");
         VBox vboxValeursDuMois = new VBox();
 
@@ -186,7 +195,11 @@ public class VueMois extends Scene {
 
         centre.getChildren().addAll(vboxGauche,vboxDroite);
 
+        vboxBoutons.setSpacing(3);
+        vboxDroite.setSpacing(3);
+
         vboxPrincipal.getChildren().add(centre);
+        vboxPrincipal.setPadding(new Insets(10,10,10,10));
         racine.getChildren().add(vboxPrincipal);
         /*****************************************************************/
 
@@ -216,6 +229,7 @@ public class VueMois extends Scene {
             Text textJour = new Text("Jour");
             Text textValeurJour = new Text(jour.getDate());
             vboxJour.getChildren().addAll(textJour, textValeurJour);
+            vboxJour.setAlignment(Pos.CENTER);
 
             VBox vBoxValeursJour = new VBox();
             Text textTitreValeurs = new Text("Valeurs (en g/m3)");
@@ -238,9 +252,16 @@ public class VueMois extends Scene {
             vboxMinimumJour.getChildren().addAll(textMinimumTitre, textMinimumValeur);
 
             hboxPrincipalValeurs.getChildren().addAll(vboxMoyenneJour, vboxMaximumJour, vboxMinimumJour);
+            hboxPrincipalValeurs.setSpacing(20);
 
             vBoxValeursJour.getChildren().addAll(textTitreValeurs, hboxPrincipalValeurs);
+            vBoxValeursJour.setAlignment(Pos.CENTER);
 
+            hboxPrincipalJour.setSpacing(20);
+            hboxPrincipalJour.setPadding(new Insets(0,0,10,0));
+            hboxPrincipalJour.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+                    + "-fx-border-width: 1;" + "-fx-border-insets: 5;"
+                    + "-fx-border-radius: 5;" + "-fx-border-color: blue;");
             hboxPrincipalJour.getChildren().addAll(vboxJour, vBoxValeursJour);
             vboxListeJours.getChildren().add(hboxPrincipalJour);
             scrollPanelisteTest.setContent(vboxListeJours);

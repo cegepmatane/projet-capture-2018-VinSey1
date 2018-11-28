@@ -3,6 +3,8 @@ package vue;
 import action.Controleur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -42,7 +44,7 @@ public class VueAnnee extends Scene {
     private Controleur controleur = null;
 
     public VueAnnee() {
-        super(new StackPane(),600,600);
+        super(new StackPane(),700,350);
         racine = (StackPane) this.getRoot();
     }
 
@@ -59,7 +61,10 @@ public class VueAnnee extends Scene {
         Text titreHaut = new Text("Statistiques de l'application");
         Text titreBas = new Text("Par année");
         vboxTitre.getChildren().addAll(titreHaut,titreBas);
+        vboxTitre.setAlignment(Pos.CENTER);
         hboxTitre.getChildren().add(vboxTitre);
+        hboxTitre.setAlignment(Pos.CENTER);
+        hboxTitre.setPadding(new Insets(0, 0, 30, 0));
         vboxPrincipal.getChildren().add(hboxTitre);
 
         HBox centre = new HBox();
@@ -102,20 +107,24 @@ public class VueAnnee extends Scene {
             }
         });
 
-        annee.getChildren().addAll(textAnnee,selectionDate);
+        annee.getChildren().addAll(textAnnee,selectionDate,actionAfficherListe);
+        annee.setSpacing(10);
         HBox hboxNombreTest = new HBox();
         Text textNombreTestTitre = new Text("Nombre de test : ");
         textNombreTestValeur = new Text();
         hboxNombreTest.getChildren().addAll(textNombreTestTitre,textNombreTestValeur);
+        hboxNombreTest.setPadding(new Insets(30, 0, 0, 0));
 
         /*****************************************************************/
         //LISTE VALEURS
         scrollPanelisteTest = new ScrollPane();
-        vboxGauche.getChildren().addAll(annee,actionAfficherListe,hboxNombreTest,scrollPanelisteTest);
+        vboxGauche.setPadding(new Insets(0, 20, 0, 0));
+        vboxGauche.getChildren().addAll(annee,hboxNombreTest,scrollPanelisteTest);
         /*****************************************************************/
         //Valeur de Annee + Synthese des mois et Boutons - Partie Droite
 
         VBox vboxDroite = new VBox();
+        vboxDroite.setPadding(new Insets(10,10,10,10));
         Text valeurAnneeTitre = new Text("Valeurs de l'année");
         VBox vboxValeursDeAnnee = new VBox();
 
@@ -187,7 +196,11 @@ public class VueAnnee extends Scene {
 
         centre.getChildren().addAll(vboxGauche,vboxDroite);
 
+        vboxBoutons.setSpacing(3);
+        vboxDroite.setSpacing(3);
+
         vboxPrincipal.getChildren().add(centre);
+        vboxPrincipal.setPadding(new Insets(10,10,10,10));
         racine.getChildren().add(vboxPrincipal);
         /*****************************************************************/
 
@@ -217,11 +230,13 @@ public class VueAnnee extends Scene {
             Text textMois = new Text("Mois");
             Text textValeurMois = new Text(mois.getDate());
             vboxMois.getChildren().addAll(textMois,textValeurMois);
+            vboxMois.setAlignment(Pos.CENTER);
 
             VBox vBoxValeursMois = new VBox();
             Text textTitreValeurs = new Text("Valeurs (en g/m3)");
 
             HBox hboxPrincipalValeurs = new HBox();
+            hboxPrincipalValeurs.setSpacing(20);
 
             VBox vboxMoyenneMois = new VBox();
             Text textMoyenneTitre = new Text("Moyenne");
@@ -241,8 +256,14 @@ public class VueAnnee extends Scene {
             hboxPrincipalValeurs.getChildren().addAll(vboxMoyenneMois,vboxMaximumMois,vboxMinimumMois);
 
             vBoxValeursMois.getChildren().addAll(textTitreValeurs,hboxPrincipalValeurs);
+            vBoxValeursMois.setAlignment(Pos.CENTER);
+            hboxPrincipalMois.setSpacing(20);
+            hboxPrincipalMois.setPadding(new Insets(0,0,10,0));
 
             hboxPrincipalMois.getChildren().addAll(vboxMois,vBoxValeursMois);
+            hboxPrincipalMois.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+                    + "-fx-border-width: 1;" + "-fx-border-insets: 5;"
+                    + "-fx-border-radius: 5;" + "-fx-border-color: blue;");
             vboxListeMois.getChildren().add(hboxPrincipalMois);
             scrollPanelisteTest.setContent(vboxListeMois);
             scrollPanelisteTest.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);

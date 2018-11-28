@@ -25,6 +25,7 @@ public class NavigateurDesVues extends Application
     {
         this.stade = stade;
         this.stade.setScene(null);
+        this.stade.setTitle("Statistiques");
 
         this.controleur = Controleur.getInstance();
         this.controleur.activerVues(this);

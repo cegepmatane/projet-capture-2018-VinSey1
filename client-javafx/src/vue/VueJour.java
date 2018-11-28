@@ -3,17 +3,20 @@ package vue;
 import action.Controleur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import modele.Heure;
 import modele.StatistiqueJour;
+import org.omg.PortableServer.POA;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,7 +48,7 @@ public class VueJour extends Scene
 
     public VueJour()
     {
-        super(new StackPane(),600,600);
+        super(new StackPane(),700,350);
         racine = (StackPane) this.getRoot();
     }
 
@@ -62,8 +65,12 @@ public class VueJour extends Scene
         Text titreHaut = new Text("Statistiques de l'application");
         Text titreBas = new Text("Par jour");
         vboxTitre.getChildren().addAll(titreHaut,titreBas);
+        vboxTitre.setAlignment(Pos.CENTER);
         hboxTitre.getChildren().add(vboxTitre);
+        hboxTitre.setAlignment(Pos.CENTER);
         vboxPrincipal.getChildren().add(hboxTitre);
+        hboxTitre.setPadding(new Insets(0, 0, 30, 0));
+
 
         HBox centre = new HBox();
         /*****************************************************************/
@@ -107,16 +114,19 @@ public class VueJour extends Scene
             }
         });
 
-        jour.getChildren().addAll(textJour,selectionDate);
+        jour.getChildren().addAll(textJour,selectionDate,actionAfficherListe);
+        jour.setSpacing(10);
         HBox hboxNombreTest = new HBox();
         Text textNombreTestTitre = new Text("Nombre de test : ");
         textNombreTestValeur = new Text();
         hboxNombreTest.getChildren().addAll(textNombreTestTitre,textNombreTestValeur);
+        hboxNombreTest.setPadding(new Insets(30, 0, 0, 0));
 
         /*****************************************************************/
         //LISTE VALEURS
         scrollPanelisteTest = new ScrollPane();
-        vboxGauche.getChildren().addAll(jour,actionAfficherListe,hboxNombreTest,scrollPanelisteTest);
+        vboxGauche.setPadding(new Insets(0, 20, 0, 0));
+        vboxGauche.getChildren().addAll(jour,hboxNombreTest,scrollPanelisteTest);
         /*****************************************************************/
         //Valeur du jour + Synthese des heures et Boutons - Partie Droite
 
@@ -189,10 +199,15 @@ public class VueJour extends Scene
         vboxBoutons.getChildren().addAll(actionNaviguerStatistiquesMois,actionNaviguerStatistiquesAnnee);
 
         vboxDroite.getChildren().addAll(valeurJourTitre,vboxValeursDujour,syntheseHeuresTitre,vboxSyntheseHeures,vboxBoutons);
-
+        vboxDroite.setPadding(new Insets(10,10,10,10));
+        vboxDroite.setSpacing(3);
         centre.getChildren().addAll(vboxGauche,vboxDroite);
 
+        vboxBoutons.setSpacing(3);
+        vboxDroite.setSpacing(3);
+
         vboxPrincipal.getChildren().add(centre);
+        vboxPrincipal.setPadding(new Insets(10,10,10,10));
         racine.getChildren().add(vboxPrincipal);
         /*****************************************************************/
 
@@ -222,6 +237,7 @@ public class VueJour extends Scene
             Text textHeure = new Text("Heure");
             Text textValeurHeure = new Text(heure.getHoraire());
             vboxHeure.getChildren().addAll(textHeure,textValeurHeure);
+            vboxHeure.setAlignment(Pos.CENTER);
 
             VBox vBoxValeursHeure = new VBox();
             Text textTitreValeurs = new Text("Valeurs (en g/m3)");
@@ -244,13 +260,21 @@ public class VueJour extends Scene
             vboxMinimumHeure.getChildren().addAll(textMinimumTitre,textMinimumValeur);
 
             hboxPrincipalValeurs.getChildren().addAll(vboxMoyenneHeure,vboxMaximumHeure,vboxMinimumHeure);
+            hboxPrincipalValeurs.setSpacing(20);
 
             vBoxValeursHeure.getChildren().addAll(textTitreValeurs,hboxPrincipalValeurs);
+            vBoxValeursHeure.setAlignment(Pos.CENTER);
+            hboxPrincipalHeure.setSpacing(20);
+            hboxPrincipalHeure.setPadding(new Insets(0,0,10,0));
 
             hboxPrincipalHeure.getChildren().addAll(vboxHeure,vBoxValeursHeure);
+            hboxPrincipalHeure.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+                    + "-fx-border-width: 1;" + "-fx-border-insets: 5;"
+                    + "-fx-border-radius: 5;" + "-fx-border-color: blue;");
             vboxListeHeures.getChildren().add(hboxPrincipalHeure);
             scrollPanelisteTest.setContent(vboxListeHeures);
             scrollPanelisteTest.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
 
             //System.out.println(heure.getHoraire());
 
