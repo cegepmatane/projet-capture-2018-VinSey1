@@ -180,6 +180,18 @@ class StatistiqueDAO
         $heureMinTests = $requeteHeureMinTests->fetch(PDO::FETCH_OBJ);
         return $heureMinTests;
     }
+	
+	function verifierDernierTest() {
+		
+		global $basededonnees;
+		$SQL_DERNIER_TEST = "SELECT HOUR(date) as heure FROM capteur WHERE YEAR(date) =" . $annee . " AND MONTH(date) = " . $mois . " AND DAY(date) = " . $jour . " ORDER BY HOUR(date) ASC LIMIT 1";
+		$requeteVerification = $basededonnees->prepare($SQL_DERNIER_TEST);
+		$requeteVerification = execute();
+		$heureDernierTest = $requeteVerification->fetch(PDO::FETCH_OBJ);
+		return $heureDernierTest;
+		
+		
+	}
 }
 
 
