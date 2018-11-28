@@ -51,6 +51,7 @@ public class VueMois extends Scene {
 
     public void afficherVueMois()
     {
+        racine.getChildren().clear();
         vboxPrincipal = new VBox();
         /*****************************************************************/
         //TITRE - Partie du Haut

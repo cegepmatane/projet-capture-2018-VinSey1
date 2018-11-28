@@ -50,6 +50,7 @@ public class VueAnnee extends Scene {
 
     public void afficherVueAnnee()
     {
+        racine.getChildren().clear();
         vboxPrincipal = new VBox();
         /*****************************************************************/
         //TITRE - Partie du Haut

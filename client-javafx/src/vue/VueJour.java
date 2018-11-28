@@ -54,6 +54,7 @@ public class VueJour extends Scene
 
     public void afficherVueJour()
     {
+        racine.getChildren().clear();
         vboxPrincipal = new VBox();
         /*****************************************************************/
         //TITRE - Partie du Haut
