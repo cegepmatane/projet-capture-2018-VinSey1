@@ -4,6 +4,7 @@ import action.Controleur;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ScrollPane;
@@ -93,6 +94,10 @@ public class VueMois extends Scene {
                 }
                 else
                 {
+                    Alert alerte= new Alert(Alert.AlertType.ERROR);
+                    alerte.setTitle("Erreur date");
+                    alerte.setHeaderText("Veuillez selectionner une date !");
+                    alerte.showAndWait();
                     System.out.println("Veuillez selectionner une date !");
                 }
             }
