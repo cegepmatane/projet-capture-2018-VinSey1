@@ -1,6 +1,5 @@
 <?php 
 	include "../accesseur/statistiqueDAO.php";
-	
 
 	$statDao = new StatistiqueDAO;
 
@@ -10,23 +9,10 @@
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
 	
 	$heureCourante = date('H');
-	
-
 ?>
 
-
 <surveillance>
-	<actif>
-	<?=($heureDernierTest<$heureCourante-1) ? 0:1;?>
-	</actif>
-	<heure-courante>
-	<?=$heureCourante ?>
-	</heure-courante>
-	<heure-dernier-test>
-	<?=$heureDernierTest->heure?>
-	</heure-dernier-test>
-	
-
+	<actif><?=($heureDernierTest->heure == $heureCourante) ? 1:0;?></actif>
+	<heure-courante><?=$heureCourante ?></heure-courante>
+	<heure-dernier-test><?=$heureDernierTest->heure?></heure-dernier-test>
 </surveillance>
-    
-
