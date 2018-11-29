@@ -218,7 +218,10 @@ public class StatistiqueDAO implements StatistiqueURL {
     }
 
     private File recevoirXMLJour(String annee, String mois, String jour) {
+        verifierDossier();
         File XML = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee + mois + jour + ".xml");
+
+
         if (XML.exists()) {
             return XML;
         } else {
@@ -262,6 +265,7 @@ public class StatistiqueDAO implements StatistiqueURL {
         }
     }
     private File recevoirXMLMois(String annee, String mois) {
+        verifierDossier();
         File XML = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee + mois + ".xml");
         if (XML.exists()) {
             return XML;
@@ -306,6 +310,7 @@ public class StatistiqueDAO implements StatistiqueURL {
         }
     }
     private File recevoirXMLAnnee(String annee) {
+        verifierDossier();
         File XML = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee  + ".xml");
         if (XML.exists()) {
             return XML;
@@ -348,5 +353,11 @@ public class StatistiqueDAO implements StatistiqueURL {
 
             return XML;
         }
+    }
+    private void verifierDossier()
+    {
+        File path = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/");
+        if(!path.exists())
+            path.mkdirs();
     }
 }
