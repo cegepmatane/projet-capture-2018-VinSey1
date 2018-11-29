@@ -1,5 +1,7 @@
 package ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.donnee;
 
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -40,6 +42,7 @@ public class CapteurDAO {
         jour = date;
         try {
             //Requete avec le jour du lancement de l'application
+            Log.d("CapteurDAO", " Adresse requête tests : http://158.69.192.249/pollution/moyenne/annee/"+dateCoupee[2]+"/mois/"+dateCoupee[1]+"/jour/");
             xml = accesseurService.execute("http://158.69.192.249/pollution/moyenne/annee/"+dateCoupee[2]+"/mois/"+dateCoupee[1]+"/jour/"+dateCoupee[0], "</statistiques-jour>").get();
             //Requete pour avoir des valeurs
             //xml = accesseurService.execute("http://158.69.192.249/pollution/moyenne/annee/2032/mois/04/jour/20", "</statistiques-jour>").get();
@@ -75,17 +78,27 @@ public class CapteurDAO {
 
             Heure heure = new Heure(horaire, moyenne, maximum, minimum);
 
+            Log.d("CapteurDAO", " Heures test : "+heure);
+
             listeHeures.add(heure);
         }
 
         moyenneJour = document.getElementsByTagName("moyenne-jour").item(0).getTextContent();
+        Log.d("CapteurDAO", " moyenneJour : "+moyenneJour);
         maximumJour = document.getElementsByTagName("maximum-jour").item(0).getTextContent();
+        Log.d("CapteurDAO", " maximumJour : "+maximumJour);
         minimumJour = document.getElementsByTagName("minimum-jour").item(0).getTextContent();
+        Log.d("CapteurDAO", " minimumJour : "+minimumJour);
         heureValeurMax = document.getElementsByTagName("heure-valeur-max").item(0).getTextContent();
+        Log.d("CapteurDAO", " heureValeurMax : "+heureValeurMax);
         heureValeurMin = document.getElementsByTagName("heure-valeur-min").item(0).getTextContent();
+        Log.d("CapteurDAO", " heureValeurMin : "+heureValeurMin);
         heureMaximumTests = document.getElementsByTagName("heure-max-tests").item(0).getTextContent();
+        Log.d("CapteurDAO", " heureMaximumTests : "+heureMaximumTests);
         heureMinimumTests = document.getElementsByTagName("heure-min-tests").item(0).getTextContent();
+        Log.d("CapteurDAO", " heureMinimumTests : "+heureMinimumTests);
         nombreTests = document.getElementsByTagName("nombre-tests").item(0).getTextContent();
+        Log.d("CapteurDAO", " nombreTests : "+nombreTests);
     }
 
     public List<HashMap<String,String>> recupererListeHeuresPourAdapteur() {
@@ -119,6 +132,8 @@ public class CapteurDAO {
         int valeurCapteurActif = Integer.parseInt(document.getElementsByTagName("actif").item(0).getTextContent());
 
         boolean capteurActif = (valeurCapteurActif != 0);
+        Log.d("CapteurDAO", " capteurActif : "+capteurActif);
+
         return capteurActif;
     }
 

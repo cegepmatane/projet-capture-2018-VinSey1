@@ -71,7 +71,6 @@ public class VueJour extends AppCompatActivity {
         delaiTempsAlerte.schedule(new TimerTask() {
             @Override
             public void run() {
-                Log.d("Capteur Actif ", ""+accesseurCapteur.capteurEstActif());
                 if(!accesseurCapteur.capteurEstActif() && !alerteActivee){
                     alerteActivee = true;
                     gestionnaireVue.post(new Runnable() {
