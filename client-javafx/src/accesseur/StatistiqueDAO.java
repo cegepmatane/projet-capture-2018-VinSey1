@@ -10,7 +10,15 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -18,36 +26,32 @@ public class StatistiqueDAO implements StatistiqueURL {
 
     private static StatistiqueDAO instance;
 
-    public StatistiqueDAO()
-    {
+    public StatistiqueDAO() {
 
     }
 
 
     //singleton
-    public static StatistiqueDAO getInstance()
-    {
-        if(null == instance)
+    public static StatistiqueDAO getInstance() {
+        if (null == instance)
             instance = new StatistiqueDAO();
         return instance;
     }
 
 
-    public StatistiqueJour recevoirStatistiqueJour(String annee, String mois, String jour)
-    {
+    public StatistiqueJour recevoirStatistiqueJour(String annee, String mois, String jour) {
         StatistiqueJour stat = new StatistiqueJour();
         ArrayList<Heure> heures = new ArrayList<>();
         Synthese synthese = new Synthese();
-        String urlRecu = JOUR_URL;
-        String[] urlSplit = urlRecu.split("-");
+        File xml = recevoirXMLJour(annee, mois, jour);
         try {
-            URL url = new URL(urlSplit[0]+ annee +urlSplit[1]+ mois + urlSplit[2] + jour);
+
             DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = null;
 
             docBuilder = docbuildFactory.newDocumentBuilder();
 
-            Document document = docBuilder.parse(url.openStream());
+            Document document = docBuilder.parse(xml);
 
             document.getDocumentElement().normalize();
 
@@ -94,28 +98,23 @@ public class StatistiqueDAO implements StatistiqueURL {
         }
 
 
-       return null;
+        return null;
 
 
     }
 
-    public StatistiqueMois recevoirStatistiqueMois(String annee, String mois)
-    {
+    public StatistiqueMois recevoirStatistiqueMois(String annee, String mois) {
         StatistiqueMois stat = new StatistiqueMois();
         ArrayList<Jour> jours = new ArrayList<>();
         Synthese synthese = new Synthese();
-        //URL url = new URL("http://158.69.192.249/pollution/moyenne/annee/"+ annee +"/mois/"+ mois);
-        String urlRecu = MOIS_URL;
 
-        String[] urlSplit = urlRecu.split("-");
-        try
-        {
-            URL url = new URL( urlSplit[0] + annee + urlSplit[1] + mois);
+        try {
+           File xml = recevoirXMLMois(annee, mois);
 
             DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = null;
             docBuilder = docbuildFactory.newDocumentBuilder();
-            Document document = docBuilder.parse(url.openStream());
+            Document document = docBuilder.parse(xml);
             document.getDocumentElement().normalize();
             stat.setMois(document.getElementsByTagName("mois").item(0).getTextContent());
             stat.setNombreTests(document.getElementsByTagName("nombre-tests").item(0).getTextContent());
@@ -123,12 +122,10 @@ public class StatistiqueDAO implements StatistiqueURL {
 
             NodeList nodeList = document.getElementsByTagName("jour");
 
-            for (int i = 0; i < nodeList.getLength(); i++)
-            {
+            for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
 
-                if (node.getNodeType() == Node.ELEMENT_NODE)
-                {
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) node;
                     Jour jour = new Jour();
                     jour.setDate(element.getElementsByTagName("date").item(0).getTextContent());
@@ -139,19 +136,19 @@ public class StatistiqueDAO implements StatistiqueURL {
                     jours.add(jour);
                 }
             }
-                Node node = document.getElementsByTagName("synthese").item(0);
-                Element element = (Element) node;
-                synthese.setMoyenneMois(element.getElementsByTagName("moyenne-mois").item(0).getTextContent());
-                synthese.setMaximumMois(element.getElementsByTagName("maximum-mois").item(0).getTextContent());
-                synthese.setMinimumMois(element.getElementsByTagName("minimum-mois").item(0).getTextContent());
-                synthese.setJourValeurMax(element.getElementsByTagName("jour-valeur-max").item(0).getTextContent());
-                synthese.setJourValeurMin(element.getElementsByTagName("jour-valeur-min").item(0).getTextContent());
-                synthese.setJourMaxTest(element.getElementsByTagName("jour-max-test").item(0).getTextContent());
-                synthese.setJourMinTest(element.getElementsByTagName("jour-min-test").item(0).getTextContent());
+            Node node = document.getElementsByTagName("synthese").item(0);
+            Element element = (Element) node;
+            synthese.setMoyenneMois(element.getElementsByTagName("moyenne-mois").item(0).getTextContent());
+            synthese.setMaximumMois(element.getElementsByTagName("maximum-mois").item(0).getTextContent());
+            synthese.setMinimumMois(element.getElementsByTagName("minimum-mois").item(0).getTextContent());
+            synthese.setJourValeurMax(element.getElementsByTagName("jour-valeur-max").item(0).getTextContent());
+            synthese.setJourValeurMin(element.getElementsByTagName("jour-valeur-min").item(0).getTextContent());
+            synthese.setJourMaxTest(element.getElementsByTagName("jour-max-test").item(0).getTextContent());
+            synthese.setJourMinTest(element.getElementsByTagName("jour-min-test").item(0).getTextContent());
 
-                stat.setJours(jours);
-                stat.setSynthese(synthese);
-                return stat;
+            stat.setJours(jours);
+            stat.setSynthese(synthese);
+            return stat;
 
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -163,20 +160,18 @@ public class StatistiqueDAO implements StatistiqueURL {
         return null;
     }
 
-    public StatistiqueAnnee recevoirStatistiqueAnnee(String annee)
-    {
+    public StatistiqueAnnee recevoirStatistiqueAnnee(String annee) {
 
         StatistiqueAnnee stat = new StatistiqueAnnee();
         ArrayList<Mois> mois = new ArrayList<>();
         Synthese synthese = new Synthese();
-        String urlRecu = ANNEE_URL;
-        try
-        {
-            URL url = new URL(urlRecu + annee);
+
+        try {
+            File xml = recevoirXMLAnnee(annee);
             DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = null;
             docBuilder = docbuildFactory.newDocumentBuilder();
-            Document document = docBuilder.parse(url.openStream());
+            Document document = docBuilder.parse(xml);
             document.getDocumentElement().normalize();
             stat.setAnnee(document.getElementsByTagName("annee").item(0).getTextContent());
             stat.setNombreTests(document.getElementsByTagName("nombre-tests").item(0).getTextContent());
@@ -212,15 +207,146 @@ public class StatistiqueDAO implements StatistiqueURL {
             stat.setSynthese(synthese);
             return stat;
 
-    } catch (ParserConfigurationException e) {
-        e.printStackTrace();
-    } catch (SAXException e) {
-        e.printStackTrace();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
+    private File recevoirXMLJour(String annee, String mois, String jour) {
+        File XML = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee + mois + jour + ".xml");
+        if (XML.exists()) {
+            return XML;
+        } else {
+            String urlRecu = JOUR_URL;
+            String[] urlSplit = urlRecu.split("-");
 
+
+            try {
+                URL url = new URL(urlSplit[0] + annee + urlSplit[1] + mois + urlSplit[2] + jour);
+                DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = null;
+
+                docBuilder = docbuildFactory.newDocumentBuilder();
+
+                Document document = docBuilder.parse(url.openStream());
+                File XMLSortie = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee + mois + jour + ".xml");
+
+                TransformerFactory tfactory = TransformerFactory.newInstance();
+                Transformer xform = tfactory.newTransformer();
+
+                xform.transform(new DOMSource(document), new StreamResult(XMLSortie));
+
+                XML = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee + mois + jour + ".xml");
+
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TransformerConfigurationException e) {
+                e.printStackTrace();
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            }
+
+
+            return XML;
+        }
+    }
+    private File recevoirXMLMois(String annee, String mois) {
+        File XML = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee + mois + ".xml");
+        if (XML.exists()) {
+            return XML;
+        } else {
+            String urlRecu = MOIS_URL;
+            String[] urlSplit = urlRecu.split("-");
+
+
+            try {
+                URL url = new URL(urlSplit[0] + annee + urlSplit[1] + mois );
+                DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = null;
+
+                docBuilder = docbuildFactory.newDocumentBuilder();
+
+                Document document = docBuilder.parse(url.openStream());
+                File XMLSortie = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee + mois + ".xml");
+
+                TransformerFactory tfactory = TransformerFactory.newInstance();
+                Transformer xform = tfactory.newTransformer();
+
+                xform.transform(new DOMSource(document), new StreamResult(XMLSortie));
+
+                XML = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee + mois + ".xml");
+
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TransformerConfigurationException e) {
+                e.printStackTrace();
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            }
+
+
+            return XML;
+        }
+    }
+    private File recevoirXMLAnnee(String annee) {
+        File XML = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee  + ".xml");
+        if (XML.exists()) {
+            return XML;
+        } else {
+            String urlRecu = ANNEE_URL;
+
+
+
+            try {
+                URL url = new URL(urlRecu + annee);
+                DocumentBuilderFactory docbuildFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder docBuilder = null;
+
+                docBuilder = docbuildFactory.newDocumentBuilder();
+
+                Document document = docBuilder.parse(url.openStream());
+                File XMLSortie = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee +".xml");
+
+                TransformerFactory tfactory = TransformerFactory.newInstance();
+                Transformer xform = tfactory.newTransformer();
+
+                xform.transform(new DOMSource(document), new StreamResult(XMLSortie));
+
+                XML = new File(System.getProperty("user.home") + "/ClientStatistiqueCapture/" + annee +".xml");
+
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TransformerConfigurationException e) {
+                e.printStackTrace();
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            }
+
+
+            return XML;
+        }
+    }
 }
