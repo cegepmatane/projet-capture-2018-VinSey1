@@ -96,6 +96,32 @@ public class CapteurDAO {
         return listeHeuresPourAdaptateur;
     }
 
+    public boolean capteurEstActif(){
+        accesseurService = new ServiceDAO();
+        Document document = null;
+        try {
+            xml = accesseurService.execute("http://158.69.192.249/pollution/alerte/", "</surveillance>").get();
+            DocumentBuilder parseur = null;
+            parseur = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            document = parseur.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+
+        int valeurCapteurActif = Integer.parseInt(document.getElementsByTagName("actif").item(0).getTextContent());
+
+        boolean capteurActif = (valeurCapteurActif != 0);
+        return capteurActif;
+    }
+
     public List<Heure> getListeHeures(){
         return listeHeures;
     }

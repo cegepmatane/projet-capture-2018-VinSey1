@@ -189,17 +189,8 @@ class StatistiqueDAO
 		$requeteVerification->execute();
 		$heureDernierTest = $requeteVerification->fetch(PDO::FETCH_OBJ);
 		return $heureDernierTest;
-		
-		
+	
 	}
 }
-
-
-
-
-
-
-
-
 
 ?>

@@ -1,23 +1,24 @@
 package ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.vue;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.R;
 import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.donnee.CapteurDAO;
@@ -26,8 +27,10 @@ import ca.qc.cgmatane.informatique.projet_capture_2018_vinsey1.modele.Heure;
 public class VueJour extends AppCompatActivity {
 
     protected ListView vueListeDonnes;
-    private CapteurDAO  accesseurCapteur;
+    private static CapteurDAO accesseurCapteur;
     protected List<HashMap<String, String>> listeHeuresPourAdapteur;
+    private Handler gestionnaireVue;
+    private boolean alerteActivee = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,31 @@ public class VueJour extends AppCompatActivity {
         heureMinimum.setText(accesseurCapteur.getHeureValeurMin());
         heureMinimumTests.setText(accesseurCapteur.getHeureMinimumTests());
         heureMaximumTests.setText(accesseurCapteur.getHeureMaximumTests());
+
+        Timer delaiTempsAlerte = new Timer();
+
+        gestionnaireVue = new Handler();
+
+        delaiTempsAlerte.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d("Capteur Actif ", ""+accesseurCapteur.capteurEstActif());
+                if(!accesseurCapteur.capteurEstActif() && !alerteActivee){
+                    alerteActivee = true;
+                    gestionnaireVue.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            AlertDialog.Builder alerte = new AlertDialog.Builder(VueJour.this);
+                            alerte.setCancelable(true);
+                            alerte.setTitle("Attention !");
+                            alerte.setMessage("Le capteur est désactivé");
+                            AlertDialog dialogue = alerte.create();
+                            dialogue.show();
+                        }
+                    });
+                }
+            }
+        }, 3000, 3000);
     }
 
     private void afficherToutesLesHeures() {
