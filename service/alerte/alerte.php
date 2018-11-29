@@ -9,7 +9,7 @@
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
 	
-	
+	$heureCourante = date('H');
 	
 
 ?>
@@ -17,10 +17,10 @@
 
 <surveillance>
 	<actif>
-	<?=($heureDernierTest<date('H')-1) ? 0:1;?>
+	<?=($heureDernierTest<$heureCourante-1) ? 0:1;?>
 	</actif>
 	<heure-courante>
-	<?=print date('H') ?>
+	<?=$heureCourante ?>
 	</heure-courante>
 	<heure-dernier-test>
 	<?=$heureDernierTest->heure?>
