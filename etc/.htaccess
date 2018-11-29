@@ -22,4 +22,4 @@ RewriteRule ^pollution/moyenne/annee/([0-9]*)/mois/([0-9]*)$ capture/statistique
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^pollution/verification/annee/([0-9]*)/mois/([0-9]*)/jour/([0-9]*)$ capture/alerte/alerte.php?annee=$1&mois=$2&jour=$3 [QSA]
+RewriteRule ^pollution/alerte/ capture/alerte/alerte.php [QSA]

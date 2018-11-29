@@ -1,15 +1,14 @@
 <?php 
 	include "../accesseur/statistiqueDAO.php";
 	
-	$jour = $_GET['jour'];
-	$mois = $_GET['mois'];
-	$annee = $_GET['annee'];
+
 	$statDao = new StatistiqueDAO;
 
-	$heureDernierTest = $statDao->verifierDernierTest($annee, $mois, $jour);
+	$heureDernierTest = $statDao->verifierDernierTest();
 
 	header("Content-type: text/xml");
 	echo '<?xml version="1.0" encoding="UTF-8"?>';
+	
 	
 	
 
@@ -18,11 +17,14 @@
 
 <surveillance>
 	<actif>
-	
+	<?=($heureDernierTest<date('H')-1) ? 0:1;?>
 	</actif>
-	<date-dernier-test>
-	<?=($heureDernierTest !=null) ? $heureDernierTest:"";?>
-	</date-dernier-test>
+	<heure-courante>
+	<?=print date('H') ?>
+	</heure-courante>
+	<heure-dernier-test>
+	<?=$heureDernierTest->heure?>
+	</heure-dernier-test>
 	
 
 </surveillance>
