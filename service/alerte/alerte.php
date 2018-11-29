@@ -17,8 +17,11 @@
 
 <surveillance>
 	<actif>
-	<?=($heureDernierTest+1>date('H')) ? 1:0;?>
+	<?=($heureDernierTest<date('H')-1) ? 1:0;?>
 	</actif>
+	<heure-courante>
+	<?=print date('H') ?>
+	</heure-courante>
 	<heure-dernier-test>
 	<?=$heureDernierTest->heure?>
 	</heure-dernier-test>
