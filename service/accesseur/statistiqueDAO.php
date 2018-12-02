@@ -165,7 +165,7 @@ class StatistiqueDAO
     function recevoirHeureMaxTests($mois, $annee, $jour)
     {
         global $basededonnees;
-	    $SQL_HEURE_MAX_TESTS = "SELECT EXTRACT(HOUR FROM date) as heure FROM (SELECT COUNT(valeur) as nombreCapteursHeure, date FROM capteur GROUP BY EXTRACT(HOUR FROM date)) as nombreTests WHERE EXTRACT(YEAR FROM date) =" . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . " ORDER BY nombreCapteursHeure DESC LIMIT 1";
+	    $SQL_HEURE_MAX_TESTS = "SELECT date as heure FROM (SELECT COUNT(valeur) as nombreCapteursHeure, EXTRACT(HOUR FROM date) as date FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . "  GROUP BY EXTRACT(HOUR FROM date)) as nombreTests ORDER BY nombreCapteursHeure DESC LIMIT 1";
         $requeteHeureMaxTests = $basededonnees->prepare($SQL_HEURE_MAX_TESTS);
         $requeteHeureMaxTests->execute();
         $heureMaxTests = $requeteHeureMaxTests->fetch(PDO::FETCH_OBJ);
@@ -175,7 +175,7 @@ class StatistiqueDAO
     function recevoirHeureMinTests($mois, $annee, $jour)
     {
         global $basededonnees;
-	    $SQL_HEURE_MIN_TESTS = "SELECT EXTRACT(HOUR FROM date) as heure FROM (SELECT COUNT(valeur) as nombreCapteursHeure, date FROM capteur GROUP BY EXTRACT(HOUR FROM date)) as nombreTests WHERE EXTRACT(YEAR FROM date) =" . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . " ORDER BY nombreCapteursHeure ASC LIMIT 1";
+	    $SQL_HEURE_MIN_TESTS = "SELECT date as heure FROM (SELECT COUNT(valeur) as nombreCapteursHeure, EXTRACT(HOUR FROM date) as date FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . "  GROUP BY EXTRACT(HOUR FROM date)) as nombreTests ORDER BY nombreCapteursHeure ASC LIMIT 1";
         $requeteHeureMinTests = $basededonnees->prepare($SQL_HEURE_MIN_TESTS);
         $requeteHeureMinTests->execute();
         $heureMinTests = $requeteHeureMinTests->fetch(PDO::FETCH_OBJ);
