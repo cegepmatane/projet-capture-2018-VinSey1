@@ -25,7 +25,7 @@ class StatistiqueDAO
     function recevoirMoisValeurMax($annee)
     {
         global $basededonnees;
-	    $SQL_MOIS_VALEUR_MAX = "SELECT EXTRACT(MONTH FROM date) as mois, valeur FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND valeur IN (SELECT MAX(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . ") GROUP BY EXTRACT(YEAR FROM date)";
+	    $SQL_MOIS_VALEUR_MAX = "SELECT EXTRACT(MONTH FROM date) as mois FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND valeur IN (SELECT MAX(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . ") GROUP BY EXTRACT(MONTH FROM date)";
 	    $requeteMoisValeurMax = $basededonnees->prepare($SQL_MOIS_VALEUR_MAX);
 	    $requeteMoisValeurMax->execute();
         $moisValeurMax = $requeteMoisValeurMax->fetch(PDO::FETCH_OBJ);
@@ -35,7 +35,7 @@ class StatistiqueDAO
     function recevoirMoisValeurMin($annee)
     {
         global $basededonnees;
-	    $SQL_MOIS_VALEUR_MIN = "SELECT EXTRACT(MONTH FROM date) as mois, valeur FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND valeur IN (SELECT MIN(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . ") GROUP BY EXTRACT(YEAR FROM date)";
+	    $SQL_MOIS_VALEUR_MIN = "SELECT EXTRACT(MONTH FROM date) as mois FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND valeur IN (SELECT MIN(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . ") GROUP BY EXTRACT(MONTH FROM date)";
 	    $requeteMoisValeurMin = $basededonnees->prepare($SQL_MOIS_VALEUR_MIN);
 	    $requeteMoisValeurMin->execute();
         $moisValeurMin = $requeteMoisValeurMin->fetch(PDO::FETCH_OBJ);
