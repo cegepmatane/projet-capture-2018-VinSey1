@@ -85,7 +85,7 @@ class StatistiqueDAO
     function recevoirJoursValeurMax($mois, $annee)
     {
         global $basededonnees;
-	    $SQL_JOUR_VALEUR_MAX = "SELECT EXTRACT(DAY FROM date) as jour, valeur FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND valeur IN (SELECT MAX(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . ") GROUP BY EXTRACT(MONTH FROM date)";
+	    $SQL_JOUR_VALEUR_MAX = "SELECT EXTRACT(DAY FROM date) as jour FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND valeur IN (SELECT MAX(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . ") GROUP BY EXTRACT(DAY FROM date)";
 	    $requeteJourValeurMax = $basededonnees->prepare($SQL_JOUR_VALEUR_MAX);
 	    $requeteJourValeurMax->execute();
 	    $jourValeurMax = $requeteJourValeurMax->fetch(PDO::FETCH_OBJ);
@@ -95,7 +95,7 @@ class StatistiqueDAO
     function recevoirJourValeurMin($mois, $annee)
     {
         global $basededonnees;
-	    $SQL_JOUR_VALEUR_MIN = "SELECT EXTRACT(DAY FROM date) as jour, valeur FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND valeur IN (SELECT MIN(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . ") GROUP BY EXTRACT(MONTH FROM date)";
+	    $SQL_JOUR_VALEUR_MIN = "SELECT EXTRACT(DAY FROM date) as jour FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND valeur IN (SELECT MIN(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . ") GROUP BY EXTRACT(DAY FROM date) LIMIT 1";
 	    $requeteJourValeurMin = $basededonnees->prepare($SQL_JOUR_VALEUR_MIN);
 	    $requeteJourValeurMin->execute();
 	    $jourValeurMin = $requeteJourValeurMin->fetch(PDO::FETCH_OBJ);
