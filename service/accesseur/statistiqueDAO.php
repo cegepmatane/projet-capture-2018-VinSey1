@@ -145,7 +145,7 @@ class StatistiqueDAO
     function recevoirHeureValeurMax($mois, $annee, $jour)
     {
         global $basededonnees;
-	    $SQL_HEURE_VALEUR_MAX = "SELECT EXTRACT(HOUR FROM date) as heure, valeur FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . " AND valeur IN (SELECT MAX(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . ") GROUP BY EXTRACT(DAY FROM date)";
+	    $SQL_HEURE_VALEUR_MAX = "SELECT EXTRACT(HOUR FROM date) as heure FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . " AND valeur IN (SELECT MAX(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . ") GROUP BY EXTRACT(HOUR FROM date)";
 	    $requeteHeureValeurMax = $basededonnees->prepare($SQL_HEURE_VALEUR_MAX);
 	    $requeteHeureValeurMax->execute();
 	    $heureValeurMax = $requeteHeureValeurMax->fetch(PDO::FETCH_OBJ);
@@ -155,7 +155,7 @@ class StatistiqueDAO
     function recevoirHeureValeurMin($mois, $annee, $jour)
     {
         global $basededonnees;
-	    $SQL_HEURE_VALEUR_MIN = "SELECT EXTRACT(HOUR FROM date) as heure, valeur FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . " AND valeur IN (SELECT MIN(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . ") GROUP BY EXTRACT(DAY FROM date)";
+	    $SQL_HEURE_VALEUR_MIN = "SELECT EXTRACT(HOUR FROM date) as heure FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . " AND valeur IN (SELECT MIN(valeur) FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " AND EXTRACT(DAY FROM date) = " . $jour . ") GROUP BY EXTRACT(HOUR FROM date)";
 	    $requeteHeureValeurMin = $basededonnees->prepare($SQL_HEURE_VALEUR_MIN);
 	    $requeteHeureValeurMin->execute();
 	    $heureValeurMin = $requeteHeureValeurMin->fetch(PDO::FETCH_OBJ);
