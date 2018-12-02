@@ -45,7 +45,7 @@ class StatistiqueDAO
     function recevoirMoisMaxTests($annee)
     {
         global $basededonnees;
-	    $SQL_MOIS_MAX_TESTS = "SELECT EXTRACT(MONTH FROM date) as mois FROM (SELECT COUNT(valeur) as nombreCapteursMois, date FROM capteur GROUP BY EXTRACT(MONTH FROM date)) as nombreTests WHERE EXTRACT(YEAR FROM date) = " . $annee . " ORDER BY nombreCapteursMois DESC LIMIT 1";
+	    $SQL_MOIS_MAX_TESTS = "SELECT date as mois FROM (SELECT COUNT(valeur) as nombreCapteursMois, EXTRACT(MONTH FROM date) as date FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " GROUP BY EXTRACT(MONTH FROM date)) as nombreTests  ORDER BY nombreCapteursMois DESC LIMIT 1";
         $requeteMoisMaxTests = $basededonnees->prepare($SQL_MOIS_MAX_TESTS);
         $requeteMoisMaxTests->execute();
         $moisMaxTests = $requeteMoisMaxTests->fetch(PDO::FETCH_OBJ);
@@ -55,7 +55,7 @@ class StatistiqueDAO
     function recevoirMoisMinTests($annee)
     {
         global $basededonnees;
-	    $SQL_MOIS_MIN_TESTS = "SELECT EXTRACT(MONTH FROM date) as mois FROM (SELECT COUNT(valeur) as nombreCapteursMois, date FROM capteur GROUP BY EXTRACT(MONTH FROM date)) as nombreTests WHERE EXTRACT(YEAR FROM date) = " . $annee . " ORDER BY nombreCapteursMois ASC LIMIT 1";
+	    $SQL_MOIS_MIN_TESTS = "SELECT date as mois FROM (SELECT COUNT(valeur) as nombreCapteursMois, EXTRACT(MONTH FROM date) as date FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " GROUP BY EXTRACT(MONTH FROM date)) as nombreTests  ORDER BY nombreCapteursMois ASC LIMIT 1";
         $requeteMoisMinTests = $basededonnees->prepare($SQL_MOIS_MIN_TESTS);
         $requeteMoisMinTests->execute();
         $moisMinTests = $requeteMoisMinTests->fetch(PDO::FETCH_OBJ);
