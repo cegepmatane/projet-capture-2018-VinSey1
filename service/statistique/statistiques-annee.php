@@ -25,21 +25,21 @@
 	<statistiques-annee>
 		<annee><?=$annee?></annee>
 		<statistiques>
-			<nombre-tests><?=$listeCapteursAnnee->nombreCapteursAnnee?></nombre-tests>
+			<nombre-tests><?=$listeCapteursAnnee->nombrecapteursannee?></nombre-tests>
 			<details>
 				<?php foreach($listeCapteursMois as $mois){ ?>
 					<mois>
 						<date><?=$mois->mois?></date>
-						<moyenne><?=$mois->moyenneMois?></moyenne>
-						<maximum><?=$mois->maximumMois?></maximum>
-						<minimum><?=$mois->minimumMois?></minimum>
+						<moyenne><?=$mois->moyennemois?></moyenne>
+						<maximum><?=$mois->maximummois?></maximum>
+						<minimum><?=$mois->minimummois?></minimum>
 					</mois>
 				<?php } ?>
 			</details>
 			<synthese>
-				<moyenne-annee><?=($listeCapteursAnnee!=null) ? $listeCapteursAnnee->moyenneAnnee :"";?></moyenne-annee>
-				<maximum-annee><?=($listeCapteursAnnee!=null) ? $listeCapteursAnnee->maximumAnnee:"";?></maximum-annee>
-				<minimum-annee><?=($listeCapteursAnnee!=null) ? $listeCapteursAnnee->minimumAnnee:""?></minimum-annee>
+				<moyenne-annee><?=($listeCapteursAnnee!=null) ? $listeCapteursAnnee->moyenneannee :"";?></moyenne-annee>
+				<maximum-annee><?=($listeCapteursAnnee!=null) ? $listeCapteursAnnee->maximumannee:"";?></maximum-annee>
+				<minimum-annee><?=($listeCapteursAnnee!=null) ? $listeCapteursAnnee->minimumannee:""?></minimum-annee>
 				<mois-valeur-max><?=($moisValeurMax!=null) ? $moisValeurMax->mois:"";?></mois-valeur-max>
 				<mois-valeur-min><?=($moisValeurMin!=null) ? $moisValeurMin->mois:"";?></mois-valeur-min>
 				<mois-max-tests><?=($moisMaxTests!=null) ? $moisMaxTests->mois:"";?></mois-max-tests>
