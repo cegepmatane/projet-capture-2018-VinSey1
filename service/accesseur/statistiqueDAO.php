@@ -105,7 +105,7 @@ class StatistiqueDAO
     function recevoirJourMaxTests($mois, $annee)
     {
         global $basededonnees;
-	    $SQL_JOUR_MAX_TESTS = "SELECT EXTRACT(DAY FROM date) as jour FROM (SELECT COUNT(valeur) as nombreCapteursJour, date FROM capteur GROUP BY EXTRACT(DAY FROM date)) as nombreTests WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " ORDER BY nombreCapteursJour DESC LIMIT 1";
+	    $SQL_JOUR_MAX_TESTS = "SELECT date as jour FROM (SELECT COUNT(valeur) as nombreCapteursJour, EXTRACT(DAY FROM date) as date FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . "  GROUP BY EXTRACT(DAY FROM date)) as nombreTests ORDER BY nombreCapteursJour DESC LIMIT 1";
         $requeteJourMaxTests = $basededonnees->prepare($SQL_JOUR_MAX_TESTS);
         $requeteJourMaxTests->execute();
         $jourMaxTests = $requeteJourMaxTests->fetch(PDO::FETCH_OBJ);
@@ -115,7 +115,7 @@ class StatistiqueDAO
     function recevoirJourMinTests($mois, $annee)
     {
         global $basededonnees;
-	    $SQL_JOUR_MIN_TESTS = "SELECT EXTRACT(DAY FROM date) as jour FROM (SELECT COUNT(valeur) as nombreCapteursJour, date FROM capteur GROUP BY EXTRACT(DAY FROM date)) as nombreTests WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . " ORDER BY nombreCapteursJour ASC LIMIT 1";
+	    $SQL_JOUR_MIN_TESTS = "SELECT date as jour FROM (SELECT COUNT(valeur) as nombreCapteursJour, EXTRACT(DAY FROM date) as date FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " AND EXTRACT(MONTH FROM date) = " . $mois . "  GROUP BY EXTRACT(DAY FROM date)) as nombreTests ORDER BY nombreCapteursJour ASC LIMIT 1";
         $requeteJourMinTests = $basededonnees->prepare($SQL_JOUR_MIN_TESTS);
         $requeteJourMinTests->execute();
         $jourMinTests = $requeteJourMinTests->fetch(PDO::FETCH_OBJ);;
