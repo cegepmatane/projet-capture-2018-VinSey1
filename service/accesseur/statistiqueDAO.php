@@ -5,7 +5,7 @@ class StatistiqueDAO
     function recevoirListeCapteurAnnee($annee)
     {
         global $basededonnees;
-        $SQL_LISTE_CAPTEURS_ANNEE = "SELECT COUNT(*) as nombreCapteursAnnee, AVG(valeur) as moyenneAnnee, MAX(valeur) as maximumAnnee, MIN(valeur) as minimumAnnee FROM capteur WHERE YEAR(date) = " . $annee;
+        $SQL_LISTE_CAPTEURS_ANNEE = "SELECT COUNT(*) as nombreCapteursAnnee, AVG(valeur) as moyenneAnnee, MAX(valeur) as maximumAnnee, MIN(valeur) as minimumAnnee FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee;
 	    $requeteListeCapteursAnnee = $basededonnees->prepare($SQL_LISTE_CAPTEURS_ANNEE);
 	    $requeteListeCapteursAnnee->execute();
         $listeCapteursAnnee = $requeteListeCapteursAnnee->fetch(PDO::FETCH_OBJ);
@@ -15,7 +15,7 @@ class StatistiqueDAO
     function recevoirListeCapteurMoisAnnee($annee)
     {
         global $basededonnees;
-	    $SQL_LISTE_CAPTEURS_MOIS = "SELECT MONTH(date) as mois, COUNT(*) as nombreCapteursMois, AVG(valeur) as moyenneMois, MAX(valeur) as maximumMois, MIN(valeur) as minimumMois FROM capteur WHERE YEAR(date) = " . $annee . " GROUP BY MONTH(date)";
+	    $SQL_LISTE_CAPTEURS_MOIS = "SELECT EXTRACT(MONTH FROM date) as mois, COUNT(*) as nombreCapteursMois, AVG(valeur) as moyenneMois, MAX(valeur) as maximumMois, MIN(valeur) as minimumMois FROM capteur WHERE EXTRACT(YEAR FROM date) = " . $annee . " GROUP BY EXTRACT(MONTH FROM date)";
 	    $requeteListeCapteursMois = $basededonnees->prepare($SQL_LISTE_CAPTEURS_MOIS);
 	    $requeteListeCapteursMois->execute();
         $listeCapteursMois = $requeteListeCapteursMois->fetchAll(PDO::FETCH_OBJ);
@@ -184,7 +184,7 @@ class StatistiqueDAO
 	function verifierDernierTest() {
 		
 		global $basededonnees;
-		$SQL_DERNIER_TEST = "SELECT extract(HOUR FROM date) as heure FROM capteur ORDER BY date DESC LIMIT 1";
+		$SQL_DERNIER_TEST = "SELECT EXTRACT(HOUR FROM date) as heure FROM capteur ORDER BY date DESC LIMIT 1";
 		$requeteVerification = $basededonnees->prepare($SQL_DERNIER_TEST);
 		$requeteVerification->execute();
 		$heureDernierTest = $requeteVerification->fetch(PDO::FETCH_OBJ);
