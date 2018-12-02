@@ -1,8 +1,8 @@
 <?php
-    $usager = 'scientifique';
+    $usager = 'xmlcapture';
     $motdepasse = 'password';
     $hote = 'localhost';
     $base = 'capture';
-    $dsn = 'mysql:dbname='.$base.';host=' . $hote;
+    $dsn = 'pgsql:dbname=' .$base . ';host=' . $hote;
     $basededonnees = new PDO($dsn, $usager, $motdepasse);
 ?>
