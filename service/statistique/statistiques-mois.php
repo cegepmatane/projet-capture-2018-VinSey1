@@ -27,21 +27,21 @@
 	<statistiques-mois>
 		<mois><?=$mois . "/" . $annee?></mois>
 		<statistiques>
-			<nombre-tests><?=$listeCapteursMois->nombreCapteursMois?></nombre-tests>
+			<nombre-tests><?=$listeCapteursMois->nombrecapteursmois?></nombre-tests>
 			<details>
 				<?php foreach($listeCapteursJour as $jour){ ?>
 					<jour>
 						<date><?=$jour->jour?></date>
-						<moyenne><?=$jour->moyenneJour?></moyenne>
-						<maximum><?=$jour->maximumJour?></maximum>
-						<minimum><?=$jour->minimumJour?></minimum>
+						<moyenne><?=$jour->moyennejour?></moyenne>
+						<maximum><?=$jour->maximumjour?></maximum>
+						<minimum><?=$jour->minimumjour?></minimum>
 					</jour>
 				<?php } ?>
 			</details>
 			<synthese>
-				<moyenne-mois><?=($listeCapteursMois !=null) ? $listeCapteursMois->moyenneMois:"";?></moyenne-mois>
-				<maximum-mois><?=($listeCapteursMois !=null) ? $listeCapteursMois->maximumMois:"";?></maximum-mois>
-				<minimum-mois><?=($listeCapteursMois !=null) ? $listeCapteursMois->minimumMois:"";?></minimum-mois>
+				<moyenne-mois><?=($listeCapteursMois !=null) ? $listeCapteursMois->moyennemois:"";?></moyenne-mois>
+				<maximum-mois><?=($listeCapteursMois !=null) ? $listeCapteursMois->maximummois:"";?></maximum-mois>
+				<minimum-mois><?=($listeCapteursMois !=null) ? $listeCapteursMois->minimummois:"";?></minimum-mois>
 				<jour-valeur-max><?=($jourValeurMax !=null) ? $jourValeurMax->jour:"";?></jour-valeur-max>
 				<jour-valeur-min><?=($jourValeurMin !=null) ? $jourValeurMin->jour:"";?></jour-valeur-min>
 				<jour-max-test><?=($jourMaxTests !=null) ? $jourMaxTests->jour:"";?></jour-max-test>
