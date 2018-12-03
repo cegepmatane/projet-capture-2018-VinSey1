@@ -27,6 +27,7 @@ public class CapteurDAO {
     private ServiceDAO accesseurService;
     private String xml, jour, nombreTests, moyenneJour, maximumJour, minimumJour, heureValeurMax, heureValeurMin, heureMaximumTests, heureMinimumTests;
     private List<Heure> listeHeures;
+    private boolean alerteValeurs = false;
 
     public static CapteurDAO getInstance(){
         if(null == instance){
@@ -64,6 +65,7 @@ public class CapteurDAO {
     }
 
     private void initialiserStatistiques() throws ParserConfigurationException, IOException, SAXException {
+        int derniereMoyenne, dernierMaximum, dernierMinimum;
         listeHeures = new ArrayList<>();
         DocumentBuilder parseur = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = parseur.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
@@ -77,6 +79,12 @@ public class CapteurDAO {
             String minimum = noeudHeure.getElementsByTagName("minimum").item(0).getTextContent();
 
             Heure heure = new Heure(horaire, moyenne, maximum, minimum);
+
+            if((Integer.parseInt(heure.getMoyenne()))> 500 ||
+                    Integer.parseInt(heure.getMaximum()) > 500 ||
+                    Integer.parseInt(heure.getMinimum()) > 500){
+                alerteValeurs = true;
+            }
 
             Log.d("CapteurDAO", " Heures test : "+heure);
 
@@ -135,6 +143,10 @@ public class CapteurDAO {
         Log.d("CapteurDAO", " capteurActif : "+capteurActif);
 
         return capteurActif;
+    }
+
+    public boolean getAlerteValeurs() {
+        return alerteValeurs;
     }
 
     public List<Heure> getListeHeures(){

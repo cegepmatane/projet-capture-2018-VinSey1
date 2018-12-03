@@ -31,6 +31,7 @@ public class VueJour extends AppCompatActivity {
     protected List<HashMap<String, String>> listeHeuresPourAdapteur;
     private Handler gestionnaireVue;
     private boolean alerteActivee = false;
+    private boolean alerteValeursActivee = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,20 @@ public class VueJour extends AppCompatActivity {
                             alerte.setCancelable(true);
                             alerte.setTitle("Attention !");
                             alerte.setMessage("Le capteur est désactivé");
+                            AlertDialog dialogue = alerte.create();
+                            dialogue.show();
+                        }
+                    });
+                }
+                if(accesseurCapteur.getAlerteValeurs() && !alerteValeursActivee){
+                    alerteValeursActivee = true;
+                    gestionnaireVue.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            AlertDialog.Builder alerte = new AlertDialog.Builder(VueJour.this);
+                            alerte.setCancelable(true);
+                            alerte.setTitle("Attention !");
+                            alerte.setMessage("Valeurs dangereuses");
                             AlertDialog dialogue = alerte.create();
                             dialogue.show();
                         }
