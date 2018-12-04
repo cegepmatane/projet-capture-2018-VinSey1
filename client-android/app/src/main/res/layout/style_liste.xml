@@ -28,7 +28,7 @@
 
     <TextView
         android:id="@+id/valeur_heure"
-        android:layout_width="10dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
