@@ -30,5 +30,6 @@
 	<actif><?=($heureDernierTest->heure == $heureCourante) ? 1:0;?></actif>
 	<heure-courante><?=$heureCourante ?></heure-courante>
 	<heure-dernier-test><?=$heureDernierTest->heure?></heure-dernier-test>
+	<delai><?=$heureCourante-$heureDernierTest->heure?></delai>
 	<valeur-dangereuse><?=$valeurDangereuse?></valeur-dangereuse>
 </surveillance>
