@@ -27,7 +27,6 @@ public class CapteurDAO {
     private ServiceDAO accesseurService;
     private String xml, jour, nombreTests, moyenneJour, maximumJour, minimumJour, heureValeurMax, heureValeurMin, heureMaximumTests, heureMinimumTests;
     private List<Heure> listeHeures;
-    private boolean alerteValeurs = false;
 
     public static CapteurDAO getInstance(){
         if(null == instance){
@@ -47,7 +46,6 @@ public class CapteurDAO {
             xml = accesseurService.execute("http://158.69.192.249/pollution/moyenne/annee/"+dateCoupee[2]+"/mois/"+dateCoupee[1]+"/jour/"+dateCoupee[0], "</statistiques-jour>").get();
             //Requete pour avoir des valeurs
             //xml = accesseurService.execute("http://158.69.192.249/pollution/moyenne/annee/2032/mois/04/jour/20", "</statistiques-jour>").get();
-            //FAIRE SECURISATION
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -65,7 +63,6 @@ public class CapteurDAO {
     }
 
     private void initialiserStatistiques() throws ParserConfigurationException, IOException, SAXException {
-        int derniereMoyenne, dernierMaximum, dernierMinimum;
         listeHeures = new ArrayList<>();
         DocumentBuilder parseur = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = parseur.parse(new ByteArrayInputStream(xml.getBytes("UTF-8")));
@@ -79,12 +76,6 @@ public class CapteurDAO {
             String minimum = noeudHeure.getElementsByTagName("minimum").item(0).getTextContent();
 
             Heure heure = new Heure(horaire, moyenne, maximum, minimum);
-
-            if((Integer.parseInt(heure.getMoyenne()))> 500 ||
-                    Integer.parseInt(heure.getMaximum()) > 500 ||
-                    Integer.parseInt(heure.getMinimum()) > 500){
-                alerteValeurs = true;
-            }
 
             Log.d("CapteurDAO", " Heures test : "+heure);
 
@@ -117,7 +108,8 @@ public class CapteurDAO {
         return listeHeuresPourAdaptateur;
     }
 
-    public boolean capteurEstActif(){
+    public List<Boolean> alertesCapteur(){
+        List resultat = new ArrayList<Boolean>();
         accesseurService = new ServiceDAO();
         Document document = null;
         try {
@@ -138,15 +130,18 @@ public class CapteurDAO {
         }
 
         int valeurCapteurActif = Integer.parseInt(document.getElementsByTagName("actif").item(0).getTextContent());
+        int valeurCapteurDangereuse = Integer.parseInt(document.getElementsByTagName("valeur-dangereuse").item(0).getTextContent());
 
+        boolean valeurDangereuse = (valeurCapteurDangereuse != 0);
         boolean capteurActif = (valeurCapteurActif != 0);
+
         Log.d("CapteurDAO", " capteurActif : "+capteurActif);
+        Log.d("CapteurDAO", " valeurDangereuse : "+valeurDangereuse);
 
-        return capteurActif;
-    }
+        resultat.add(capteurActif);
+        resultat.add(valeurDangereuse);
 
-    public boolean getAlerteValeurs() {
-        return alerteValeurs;
+        return resultat;
     }
 
     public List<Heure> getListeHeures(){

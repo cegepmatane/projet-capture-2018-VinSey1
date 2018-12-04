@@ -6,7 +6,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +71,8 @@ public class VueJour extends AppCompatActivity {
         delaiTempsAlerte.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(!accesseurCapteur.capteurEstActif() && !alerteActivee){
+                List<Boolean> alertes = accesseurCapteur.alertesCapteur();
+                if(!alertes.get(0) && !alerteActivee){
                     alerteActivee = true;
                     gestionnaireVue.post(new Runnable() {
                         @Override
@@ -86,7 +86,7 @@ public class VueJour extends AppCompatActivity {
                         }
                     });
                 }
-                if(accesseurCapteur.getAlerteValeurs() && !alerteValeursActivee){
+                if(alertes.get(1) && !alerteValeursActivee){
                     alerteValeursActivee = true;
                     gestionnaireVue.post(new Runnable() {
                         @Override
@@ -136,12 +136,10 @@ public class VueJour extends AppCompatActivity {
     protected class HeureAdapteur extends BaseAdapter {
 
         private List<Heure> listeHeures;
-        private Context contexte;
         private LayoutInflater gestionnairePagination;
 
 
         public HeureAdapteur(Context contexte, List<Heure> listeHeures){
-            this.contexte = contexte;
             this.listeHeures = listeHeures;
             this.gestionnairePagination = LayoutInflater.from(contexte);
         }
