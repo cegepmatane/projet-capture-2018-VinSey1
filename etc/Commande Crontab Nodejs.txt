@@ -1,0 +1,6 @@
+Crontab
+    0 0 * * * /sauvegardersite.sh
+
+Restore Backup
+    cd /var/sauvegarder/date
+    tar --force-local -xzvf capture-nodejs.timestamp.tar.gz
