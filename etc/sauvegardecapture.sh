@@ -1,7 +1,5 @@
 #!/bin/bash
-
-# Chemin des dossier a sauvegarder
-DOSSIERS="/home/ubuntu/capture/"
+# Le script sert a sauvegarder les fichiers importants du serveur
 
 # Date du jour
 MAINTENANT=$(date +"%F")
@@ -10,10 +8,15 @@ MAINTENANT=$(date +"%F")
 SAUVEGARDE="/var/sauvegarde/$MAINTENANT"
 
 # Nom de la sauvegarde = note d'hote.temps.tar.gz
-FICHIERBASE="capture-nodejs.$(date +'%T').tar.gz"
+FICHIERPSQL="$(hostname).$(date +'%T').psql.sql.gz"
+
+# Informations connexion PostgreSQL
+UTILISATEURPSQL="postgres"
+MDPPSQL="password"
+NOMBD="capture"
 
 # Chemin de fichiers binaires
-TAR="/bin/tar"
+DUMPPSQL="/usr/bin/pg_dump"
 GZIP="/bin/gzip"
 LOGGER="/usr/bin/logger"
 
@@ -23,8 +26,8 @@ LOGGER="/usr/bin/logger"
 # Message pour dire que la sauvegarde a commencee
 $LOGGER "$0: *** La sauvegarde du serveur commence @ $(date) ***"
 
-# Sauvegarde des fichiers serveur de base
-$TAR -czvf ${SAUVEGARDE}/${FICHIERBASE} ${DOSSIERS}
+# Sauvegarde PostgreSQL
+$DUMPPSQL --username=${UTILISATEURPSQL} --inserts -C ${NOMBD} | $GZIP -9 > ${SAUVEGARDE}/${FICHIERPSQL}
 
 # Message de fin de sauvegarde du serveur
 $LOGGER "$0: *** Sauvegarde du serveur terminee @ $(date) ***"
