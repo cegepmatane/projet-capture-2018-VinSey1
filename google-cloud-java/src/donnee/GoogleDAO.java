@@ -1,5 +1,6 @@
 package donnee;
 
+import com.google.appengine.repackaged.org.codehaus.jackson.annotate.JsonTypeInfo.Id;
 import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
@@ -31,6 +32,29 @@ public class GoogleDAO {
 		.build();
 		
 		baseDeDonnees.put(nouveauCapteur);
+		
+	}
+	
+	public Entity trouverCapteurParId(Key cle) {
+		
+		return baseDeDonnees.get(cle);
+		
+	}
+
+	public Key ajouterCapteurEtRecupererId(Timestamp date, float latitude, float longitude, float valeur) {
+		
+		Key id = baseDeDonnees.allocateId(generateurIdCapteur.newKey());
+		
+		Entity nouveauCapteur = Entity.newBuilder(id)
+				.set("date", date)
+				.set("latitude", latitude)
+				.set("longitude", longitude)
+				.set("valeur", valeur)
+		.build();
+		
+		baseDeDonnees.put(nouveauCapteur);
+		
+		return id;		
 		
 	}
 }
