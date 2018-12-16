@@ -57,4 +57,10 @@ public class GoogleDAO {
 		return id;		
 		
 	}
+	
+	public void supprimerCapteurParId(Key cle) {
+		
+		baseDeDonnees.delete(cle);
+		
+	}
 }
