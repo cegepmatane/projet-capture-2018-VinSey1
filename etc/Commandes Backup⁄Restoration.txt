@@ -1,0 +1,7 @@
+Crontab
+    0 0 * * * /root/sauvegardecapture.sh
+
+Restore Backup
+    cd /var/sauvegarder/date
+    gunzip vps....
+    psql -U postgres -d nomb-de-la-bd -1 -f ~/fichier-backup.sql
